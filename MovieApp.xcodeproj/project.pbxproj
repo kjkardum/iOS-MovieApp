@@ -9,14 +9,15 @@
 /* Begin PBXBuildFile section */
 		71CB215227F1063F002312C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CB215127F1063F002312C7 /* AppDelegate.swift */; };
 		71CB215427F1063F002312C7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CB215327F1063F002312C7 /* SceneDelegate.swift */; };
-		71CB215627F1063F002312C7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CB215527F1063F002312C7 /* ViewController.swift */; };
-		71CB215927F1063F002312C7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71CB215727F1063F002312C7 /* Main.storyboard */; };
 		71CB215C27F1063F002312C7 /* MovieApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 71CB215A27F1063F002312C7 /* MovieApp.xcdatamodeld */; };
 		71CB215E27F10642002312C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71CB215D27F10642002312C7 /* Assets.xcassets */; };
 		71CB216127F10642002312C7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71CB215F27F10642002312C7 /* LaunchScreen.storyboard */; };
 		71CB216C27F10642002312C7 /* MovieAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CB216B27F10642002312C7 /* MovieAppTests.swift */; };
 		71CB217627F10642002312C7 /* MovieAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CB217527F10642002312C7 /* MovieAppUITests.swift */; };
 		71CB217827F10642002312C7 /* MovieAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CB217727F10642002312C7 /* MovieAppUITestsLaunchTests.swift */; };
+		71CB218627F11684002312C7 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71CB218527F11684002312C7 /* SnapKit */; };
+		71E7ACC627F23B8400C9C449 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 71E7ACC527F23B8400C9C449 /* SFSafeSymbols */; };
+		E9514BFD5A70A91974142650 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E951491783B9F1F1144FA122 /* InitialViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,8 +41,6 @@
 		71CB214E27F1063F002312C7 /* MovieApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71CB215127F1063F002312C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71CB215327F1063F002312C7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		71CB215527F1063F002312C7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		71CB215827F1063F002312C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		71CB215B27F1063F002312C7 /* MovieApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MovieApp.xcdatamodel; sourceTree = "<group>"; };
 		71CB215D27F10642002312C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71CB216027F10642002312C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -51,6 +50,7 @@
 		71CB217127F10642002312C7 /* MovieAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71CB217527F10642002312C7 /* MovieAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAppUITests.swift; sourceTree = "<group>"; };
 		71CB217727F10642002312C7 /* MovieAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		E951491783B9F1F1144FA122 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71E7ACC627F23B8400C9C449 /* SFSafeSymbols in Frameworks */,
+				71CB218627F11684002312C7 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,12 +105,11 @@
 			children = (
 				71CB215127F1063F002312C7 /* AppDelegate.swift */,
 				71CB215327F1063F002312C7 /* SceneDelegate.swift */,
-				71CB215527F1063F002312C7 /* ViewController.swift */,
-				71CB215727F1063F002312C7 /* Main.storyboard */,
 				71CB215D27F10642002312C7 /* Assets.xcassets */,
 				71CB215F27F10642002312C7 /* LaunchScreen.storyboard */,
 				71CB216227F10642002312C7 /* Info.plist */,
 				71CB215A27F1063F002312C7 /* MovieApp.xcdatamodeld */,
+				E951491783B9F1F1144FA122 /* InitialViewController.swift */,
 			);
 			path = MovieApp;
 			sourceTree = "<group>";
@@ -146,6 +147,10 @@
 			dependencies = (
 			);
 			name = MovieApp;
+			packageProductDependencies = (
+				71CB218527F11684002312C7 /* SnapKit */,
+				71E7ACC527F23B8400C9C449 /* SFSafeSymbols */,
+			);
 			productName = MovieApp;
 			productReference = 71CB214E27F1063F002312C7 /* MovieApp.app */;
 			productType = "com.apple.product-type.application";
@@ -218,6 +223,10 @@
 				Base,
 			);
 			mainGroup = 71CB214527F1063F002312C7;
+			packageReferences = (
+				71CB218427F11684002312C7 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				71E7ACC427F23B8400C9C449 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
+			);
 			productRefGroup = 71CB214F27F1063F002312C7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -236,7 +245,6 @@
 			files = (
 				71CB216127F10642002312C7 /* LaunchScreen.storyboard in Resources */,
 				71CB215E27F10642002312C7 /* Assets.xcassets in Resources */,
-				71CB215927F1063F002312C7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,10 +269,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71CB215627F1063F002312C7 /* ViewController.swift in Sources */,
 				71CB215227F1063F002312C7 /* AppDelegate.swift in Sources */,
 				71CB215C27F1063F002312C7 /* MovieApp.xcdatamodeld in Sources */,
 				71CB215427F1063F002312C7 /* SceneDelegate.swift in Sources */,
+				E9514BFD5A70A91974142650 /* InitialViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,14 +309,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		71CB215727F1063F002312C7 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				71CB215827F1063F002312C7 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		71CB215F27F10642002312C7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -445,7 +445,6 @@
 				INFOPLIST_FILE = MovieApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -472,7 +471,6 @@
 				INFOPLIST_FILE = MovieApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -600,6 +598,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		71CB218427F11684002312C7 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		71E7ACC427F23B8400C9C449 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		71CB218527F11684002312C7 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71CB218427F11684002312C7 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		71E7ACC527F23B8400C9C449 /* SFSafeSymbols */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71E7ACC427F23B8400C9C449 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
+			productName = SFSafeSymbols;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		71CB215A27F1063F002312C7 /* MovieApp.xcdatamodeld */ = {
