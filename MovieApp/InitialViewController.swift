@@ -30,19 +30,19 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
         scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.delegate = self
         
-        let demoInfoText = UILabel()
         imageView.image = UIImage(named: "DemoCover.jpg")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
-        demoInfoText.textColor = .white
-        demoInfoText.numberOfLines = 0
-        let text =  """
-                    Lorem ipsum dolor sit amet, in alia adhuc aperiri nam. Movet scripta tractatos cu eum, sale commodo meliore ea eam, per commodo atomorum ea. Unum graeci iriure nec an, ea sit habeo movet electram. Id eius assum persius pro, id cum falli accusam. Has eu fierent partiendo, doming expetenda interesset cu mel, tempor possit vocent in nam. Iusto tollit ad duo, est at vidit vivendo liberavisse, vide munere nonumy sed ex.
-                            
-                    Quod possit expetendis id qui, consequat vituperata ad eam. Per cu elit latine vivendum. Ei sit nullam aliquam, an ferri epicuri quo. Ex vim tibique accumsan erroribus. In per libris verear adipiscing. Purto aliquid lobortis ea quo, ea utinam oportere qui.
-                    """
-        demoInfoText.text = text + text + text
+        
+        let detailsOverviewTitle = UILabel()
+        detailsOverviewTitle.font = UIFont.boldSystemFont(ofSize: 24)
+        detailsOverviewTitle.text = "Overview"
+        
+        let detailsOverviewContent = UILabel()
+        detailsOverviewContent.font = UIFont.systemFont(ofSize: 12)
+        detailsOverviewContent.text = "After being held captive in an Afghan cave, billionare engineer Tony Stark creates a unique weaponized suit of armor to fight evil."
+        detailsOverviewContent.numberOfLines = 0
         
         let imageContainer = UIView()
         imageContainer.backgroundColor = .darkGray
@@ -50,7 +50,7 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
         textContainer.backgroundColor = .clear
         
         let textBacking = UIView()
-        textBacking.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        textBacking.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
         view.addSubview(scrollView)
         
@@ -59,13 +59,37 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(textContainer)
         scrollView.addSubview(imageView)
         
-        textContainer.addSubview(demoInfoText)
+        textContainer.addSubview(detailsOverviewTitle)
+        textContainer.addSubview(detailsOverviewContent)
+        let peopleWorkingOnMovie = [
+            (name: "Don Heck", role: "Characters", nameComponent: UILabel(), roleComponent: UILabel()),
+            (name: "Jack Kirby", role: "Characters", nameComponent: UILabel(), roleComponent: UILabel()),
+            (name: "Jon Favreau", role: "Director", nameComponent: UILabel(), roleComponent: UILabel()),
+            (name: "Don Heck", role: "Screenplay", nameComponent: UILabel(), roleComponent: UILabel()),
+            (name: "Jack Marcum", role: "Screenplay", nameComponent: UILabel(), roleComponent: UILabel()),
+            (name: "Matt Holloway", role: "Screenplay", nameComponent: UILabel(), roleComponent: UILabel())
+        ]
+        for person in peopleWorkingOnMovie {
+            let personName = person.nameComponent
+            personName.font = UIFont.boldSystemFont(ofSize: 12)
+            personName.text = person.name
+            let personRole = person.roleComponent
+            personRole.font = UIFont.systemFont(ofSize: 12)
+            personRole.text = person.role
+            textContainer.addSubview(personName)
+            textContainer.addSubview(personRole)
+        }
         
-        let button = UIButton.systemButton(with: .cCircle, target: self, action: #selector(likeMovie))
-        button.setImage(UIImage(systemSymbol: .star), for: .normal)
-        button.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-        button.tintColor = .white
-        button.layer.cornerRadius = 20
+        let movieLikeButton = UIButton.systemButton(with: .cCircle, target: self, action: #selector(likeMovie))
+        movieLikeButton.setImage(
+            UIImage(
+                systemSymbol: .star,
+                withConfiguration: UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 12))
+            ),
+            for: .normal)
+        movieLikeButton.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        movieLikeButton.tintColor = .white
+        movieLikeButton.layer.cornerRadius = 20
         
         let movieType = UILabel()
         movieType.text = "Action, Science Fiction, Adventure"
@@ -93,7 +117,7 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
         let movieUserScore = UILabel()
         movieUserScore.text = "User Score"
         movieUserScore.textColor = .white;
-        imageView.addSubview(button)
+        imageView.addSubview(movieLikeButton)
         imageView.addSubview(movieType)
         imageView.addSubview(movieLength)
         imageView.addSubview(movieRelease)
@@ -104,6 +128,7 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
             make in
             
             make.edges.equalTo(view)
+            make.bottom.equalTo(textContainer.snp.bottom)
         }
         
         imageContainer.snp.makeConstraints {
@@ -131,26 +156,19 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
     
         textContainer.snp.makeConstraints {
             make in
-            
             make.top.equalTo(imageContainer.snp.bottom)
             make.left.right.equalTo(view)
-            make.bottom.equalTo(scrollView)
+            make.bottom.equalTo(peopleWorkingOnMovie[3].roleComponent.snp.bottom).offset(90)
         }
         
         textBacking.snp.makeConstraints {
             make in
-            
             make.left.right.equalTo(view)
             make.top.equalTo(textContainer)
             make.bottom.equalTo(view)
         }
         
-        demoInfoText.snp.makeConstraints {
-            make in
-            
-            make.edges.equalTo(textContainer).inset(14)
-        }
-        button.snp.makeConstraints{
+        movieLikeButton.snp.makeConstraints{
             make in
             make.size.equalTo(CGSize(width: 40, height: 40))
             make.left.equalTo(imageView.snp.left).offset(24)
@@ -159,8 +177,8 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
         
         movieType.snp.makeConstraints{
             make in
-            make.bottom.equalTo(button.snp.top).offset(-24)
-            make.left.equalTo(button.snp.left)
+            make.bottom.equalTo(movieLikeButton.snp.top).offset(-24)
+            make.left.equalTo(movieLikeButton.snp.left)
         }
         movieLength.snp.makeConstraints{
             make in
@@ -187,6 +205,51 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
             make.bottom.equalTo(movieUserScoreValue.snp.bottom)
             make.left.equalTo(movieUserScoreValue.snp.right).offset(24)
         }
+        detailsOverviewTitle.snp.makeConstraints{
+            make in
+            make.top.equalTo(textContainer.snp.top).offset(24)
+            make.left.equalTo(textContainer.snp.left).offset(24)
+        }
+        detailsOverviewContent.snp.makeConstraints{
+            make in
+            make.top.equalTo(detailsOverviewTitle.snp.bottom).offset(24)
+            make.left.equalTo(detailsOverviewTitle.snp.left)
+            make.right.equalTo(textContainer.snp.right).offset(-24)
+        }
+        peopleWorkingOnMovie[0].nameComponent.snp.makeConstraints{
+            make in
+            make.top.equalTo(detailsOverviewContent.snp.bottom).offset(24)
+            make.left.equalTo(detailsOverviewContent.snp.left)
+            make.width.equalTo(view.snp.width).dividedBy(3).offset(-20)
+        }
+        peopleWorkingOnMovie[3].nameComponent.snp.makeConstraints{
+            make in
+            make.top.equalTo(peopleWorkingOnMovie[0].roleComponent.snp.bottom).offset(10)
+            make.left.equalTo(peopleWorkingOnMovie[0].roleComponent.snp.left)
+            make.width.equalTo(view.snp.width).dividedBy(3).offset(-20)
+        }
+        for (index, person) in peopleWorkingOnMovie.enumerated() {
+            person.roleComponent.snp.makeConstraints{
+                make in
+                make.top.equalTo(person.nameComponent.snp.bottom).offset(5)
+                make.left.equalTo(person.nameComponent.snp.left)
+            }
+            if (index != 0 && index != 3) {
+                person.nameComponent.snp.makeConstraints{
+                    make in
+                    make.top.equalTo(peopleWorkingOnMovie[index-1].nameComponent.snp.top)
+                    make.left.equalTo(peopleWorkingOnMovie[index-1].nameComponent.snp.right).offset(10)
+                    make.width.equalTo(view.snp.width).dividedBy(3).offset(-20)
+                }
+            }
+        }
+        /*demoText.snp.makeConstraints{
+            make in
+            make.top.equalTo(peopleWorkingOnMovie[3].nameComponent.snp.top).offset(10)
+            make.left.equalTo(textContainer.snp.left)
+            make.right.equalTo(textContainer.snp.right)
+            make.bottom.equalTo(textContainer.snp.bottom).offset(-10)
+        }*/
     }
     
     override func viewDidLayoutSubviews() {
