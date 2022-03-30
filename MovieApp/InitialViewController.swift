@@ -39,9 +39,9 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
-        let detailsOverviewTitle = UILabel(text: "Overview", fontFamily: "Proxima Nova", fontStyle: .headline, bold: true)
+        let detailsOverviewTitle = UILabel(text: "Overview", fontFamily: "Proxima Nova", fontStyle: .headline, bold: true, color: .black)
         
-        let detailsOverviewContent = UILabel(text: "After being held captive in an Afghan cave, billionare engineer Tony Stark creates a unique weaponized suit of armor to fight evil.", fontFamily: "Proxima Nova", fontStyle: .footnote, numberOfLines: 0)
+        let detailsOverviewContent = UILabel(text: "After being held captive in an Afghan cave, billionare engineer Tony Stark creates a unique weaponized suit of armor to fight evil.", fontFamily: "Proxima Nova", fontStyle: .footnote, numberOfLines: 0, color: .black)
         
         let imageContainer = UIView()
         imageContainer.backgroundColor = .darkGray
@@ -72,9 +72,11 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
             let personName = person.nameComponent
             personName.font = UIFont.custom(name: "Proxima Nova", style: .footnote)?.bold()
             personName.text = person.name
+            personName.textColor = .black
             let personRole = person.roleComponent
             personRole.font = UIFont.custom(name: "Proxima Nova", style: .footnote)
             personRole.text = person.role
+            personRole.textColor = .black
             textContainer.addSubview(personName)
             textContainer.addSubview(personRole)
         }
