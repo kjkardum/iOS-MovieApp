@@ -22,10 +22,12 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewDidLoad() {
-        /*for family in UIFont.familyNames.sorted() {
+        /* Find correct font name
+         for family in UIFont.familyNames.sorted() {
             let names = UIFont.fontNames(forFamilyName: family)
             print("Family: \(family) Font names: \(names)")
-        }*/
+         }
+         */
         super.viewDidLoad()
         
         view.backgroundColor = .gray
@@ -103,121 +105,95 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
         imageView.addSubview(movieUserScoreValue)
         imageView.addSubview(movieUserScore)
         scrollView.snp.makeConstraints {
-            make in
-            
-            make.edges.equalTo(view)
-            make.bottom.equalTo(textContainer.snp.bottom)
+            $0.edges.equalTo(view)
+            $0.bottom.equalTo(textContainer.snp.bottom)
         }
         
         imageContainer.snp.makeConstraints {
-            make in
-            
-            make.top.equalTo(scrollView)
-            make.left.right.equalTo(view)
-            make.height.equalTo(imageContainer.snp.width).multipliedBy(0.9)
+            $0.top.equalTo(scrollView)
+            $0.left.right.equalTo(view)
+            $0.height.equalTo(imageContainer.snp.width).multipliedBy(0.9)
         }
         
         imageView.snp.makeConstraints {
-            make in
+            $0.left.right.equalTo(imageContainer)
             
-            make.left.right.equalTo(imageContainer)
-
-            //** Note the priorities
-            make.top.equalTo(view).priority(.high)
-            
-            //** We add a height constraint too
-            make.height.greaterThanOrEqualTo(imageContainer.snp.height).priority(.required)
-            
-            //** And keep the bottom constraint
-            make.bottom.equalTo(imageContainer.snp.bottom)
+            $0.top.equalTo(view).priority(.high)
+            $0.height.greaterThanOrEqualTo(imageContainer.snp.height).priority(.required)
+            $0.bottom.equalTo(imageContainer.snp.bottom)
         }
     
         textContainer.snp.makeConstraints {
-            make in
-            make.top.equalTo(imageContainer.snp.bottom)
-            make.left.right.equalTo(view)
-            make.bottom.equalTo(peopleWorkingOnMovie[3].roleComponent.snp.bottom).offset(90)
+            $0.top.equalTo(imageContainer.snp.bottom)
+            $0.left.right.equalTo(view)
+            $0.bottom.equalTo(peopleWorkingOnMovie[3].roleComponent.snp.bottom).offset(90)
         }
         
         textBacking.snp.makeConstraints {
-            make in
-            make.left.right.equalTo(view)
-            make.top.equalTo(textContainer)
-            make.bottom.equalTo(view)
+            $0.left.right.equalTo(view)
+            $0.top.equalTo(textContainer)
+            $0.bottom.equalTo(view)
         }
         
         movieLikeButton.snp.makeConstraints{
-            make in
-            make.size.equalTo(CGSize(width: 40, height: 40))
-            make.left.equalTo(imageView.snp.left).offset(24)
-            make.bottom.equalTo(imageView.snp.bottom).offset(-24)
+            $0.size.equalTo(CGSize(width: 40, height: 40))
+            $0.left.equalTo(imageView.snp.left).offset(24)
+            $0.bottom.equalTo(imageView.snp.bottom).offset(-24)
         }
         
         movieType.snp.makeConstraints{
-            make in
-            make.bottom.equalTo(movieLikeButton.snp.top).offset(-24)
-            make.left.equalTo(movieLikeButton.snp.left)
+            $0.bottom.equalTo(movieLikeButton.snp.top).offset(-24)
+            $0.left.equalTo(movieLikeButton.snp.left)
         }
         movieLength.snp.makeConstraints{
-            make in
-            make.bottom.equalTo(movieType.snp.bottom)
-            make.left.equalTo(movieType.snp.right).offset(5)
+            $0.bottom.equalTo(movieType.snp.bottom)
+            $0.left.equalTo(movieType.snp.right).offset(5)
         }
         movieRelease.snp.makeConstraints{
-            make in
-            make.bottom.equalTo(movieType.snp.top).offset(-5)
-            make.left.equalTo(movieType.snp.left)
+            $0.bottom.equalTo(movieType.snp.top).offset(-5)
+            $0.left.equalTo(movieType.snp.left)
         }
         movieTitle.snp.makeConstraints {
-            make in
-            make.bottom.equalTo(movieRelease.snp.top).offset(-10)
-            make.left.equalTo(movieRelease.snp.left)
+            $0.bottom.equalTo(movieRelease.snp.top).offset(-10)
+            $0.left.equalTo(movieRelease.snp.left)
         }
         movieUserScoreValue.snp.makeConstraints {
-            make in
-            make.bottom.equalTo(movieTitle.snp.top).offset(-8)
-            make.left.equalTo(movieTitle.snp.left)
+            $0.bottom.equalTo(movieTitle.snp.top).offset(-8)
+            $0.left.equalTo(movieTitle.snp.left)
         }
         movieUserScore.snp.makeConstraints {
-            make in
-            make.bottom.equalTo(movieUserScoreValue.snp.bottom)
-            make.left.equalTo(movieUserScoreValue.snp.right).offset(24)
+            $0.bottom.equalTo(movieUserScoreValue.snp.bottom)
+            $0.left.equalTo(movieUserScoreValue.snp.right).offset(24)
         }
         detailsOverviewTitle.snp.makeConstraints{
-            make in
-            make.top.equalTo(textContainer.snp.top).offset(24)
-            make.left.equalTo(textContainer.snp.left).offset(24)
+            $0.top.equalTo(textContainer.snp.top).offset(24)
+            $0.left.equalTo(textContainer.snp.left).offset(24)
         }
         detailsOverviewContent.snp.makeConstraints{
-            make in
-            make.top.equalTo(detailsOverviewTitle.snp.bottom).offset(24)
-            make.left.equalTo(detailsOverviewTitle.snp.left)
-            make.right.equalTo(textContainer.snp.right).offset(-24)
+            $0.top.equalTo(detailsOverviewTitle.snp.bottom).offset(24)
+            $0.left.equalTo(detailsOverviewTitle.snp.left)
+            $0.right.equalTo(textContainer.snp.right).offset(-24)
         }
         peopleWorkingOnMovie[0].nameComponent.snp.makeConstraints{
-            make in
-            make.top.equalTo(detailsOverviewContent.snp.bottom).offset(24)
-            make.left.equalTo(detailsOverviewContent.snp.left)
-            make.width.equalTo(view.snp.width).dividedBy(3).offset(-20)
+            $0.top.equalTo(detailsOverviewContent.snp.bottom).offset(24)
+            $0.left.equalTo(detailsOverviewContent.snp.left)
+            $0.width.equalTo(view.snp.width).dividedBy(3).offset(-20)
         }
         peopleWorkingOnMovie[3].nameComponent.snp.makeConstraints{
-            make in
-            make.top.equalTo(peopleWorkingOnMovie[0].roleComponent.snp.bottom).offset(10)
-            make.left.equalTo(peopleWorkingOnMovie[0].roleComponent.snp.left)
-            make.width.equalTo(view.snp.width).dividedBy(3).offset(-20)
+            $0.top.equalTo(peopleWorkingOnMovie[0].roleComponent.snp.bottom).offset(10)
+            $0.left.equalTo(peopleWorkingOnMovie[0].roleComponent.snp.left)
+            $0.width.equalTo(view.snp.width).dividedBy(3).offset(-20)
         }
         for (index, person) in peopleWorkingOnMovie.enumerated() {
             person.roleComponent.snp.makeConstraints{
-                make in
-                make.top.equalTo(person.nameComponent.snp.bottom).offset(5)
-                make.left.equalTo(person.nameComponent.snp.left)
+                $0.top.equalTo(person.nameComponent.snp.bottom).offset(5)
+                $0.left.equalTo(person.nameComponent.snp.left)
             }
             if (index != 0 && index != 3) {
                 person.nameComponent.snp.makeConstraints{
-                    make in
-                    make.top.equalTo(peopleWorkingOnMovie[index-1].nameComponent.snp.top)
-                    make.left.equalTo(peopleWorkingOnMovie[index-1].nameComponent.snp.right).offset(10)
-                    make.width.equalTo(view.snp.width).dividedBy(3).offset(-20)
+                    $0.top.equalTo(peopleWorkingOnMovie[index-1].nameComponent.snp.top)
+                    $0.left.equalTo(peopleWorkingOnMovie[index-1].nameComponent.snp.right).offset(10)
+                    $0.width.equalTo(view.snp.width).dividedBy(3).offset(-20)
                 }
             }
         }
