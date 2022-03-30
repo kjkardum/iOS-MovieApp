@@ -17,6 +17,10 @@
 		71CB217827F10642002312C7 /* MovieAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CB217727F10642002312C7 /* MovieAppUITestsLaunchTests.swift */; };
 		71CB218627F11684002312C7 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71CB218527F11684002312C7 /* SnapKit */; };
 		71E7ACC627F23B8400C9C449 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 71E7ACC527F23B8400C9C449 /* SFSafeSymbols */; };
+		71E7ACCB27F490D600C9C449 /* ProximaNovaFont.otf in Resources */ = {isa = PBXBuildFile; fileRef = 71E7ACCA27F490D600C9C449 /* ProximaNovaFont.otf */; };
+		71E7ACCE27F491C800C9C449 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E7ACCD27F491C800C9C449 /* UILabelExtension.swift */; };
+		71E7ACD027F497B900C9C449 /* ProximaNovaBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 71E7ACCF27F497B900C9C449 /* ProximaNovaBold.otf */; };
+		71E7ACD227F498E900C9C449 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E7ACD127F498E900C9C449 /* UIFontExtension.swift */; };
 		E9514BFD5A70A91974142650 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E951491783B9F1F1144FA122 /* InitialViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +54,10 @@
 		71CB217127F10642002312C7 /* MovieAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71CB217527F10642002312C7 /* MovieAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAppUITests.swift; sourceTree = "<group>"; };
 		71CB217727F10642002312C7 /* MovieAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		71E7ACCA27F490D600C9C449 /* ProximaNovaFont.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ProximaNovaFont.otf; sourceTree = "<group>"; };
+		71E7ACCD27F491C800C9C449 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
+		71E7ACCF27F497B900C9C449 /* ProximaNovaBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ProximaNovaBold.otf; sourceTree = "<group>"; };
+		71E7ACD127F498E900C9C449 /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		E951491783B9F1F1144FA122 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +111,8 @@
 		71CB215027F1063F002312C7 /* MovieApp */ = {
 			isa = PBXGroup;
 			children = (
+				71E7ACCC27F4911000C9C449 /* fonts */,
+				71E7ACC727F48E1100C9C449 /* Extensions */,
 				71CB215127F1063F002312C7 /* AppDelegate.swift */,
 				71CB215327F1063F002312C7 /* SceneDelegate.swift */,
 				71CB215D27F10642002312C7 /* Assets.xcassets */,
@@ -129,6 +139,24 @@
 				71CB217727F10642002312C7 /* MovieAppUITestsLaunchTests.swift */,
 			);
 			path = MovieAppUITests;
+			sourceTree = "<group>";
+		};
+		71E7ACC727F48E1100C9C449 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				71E7ACCD27F491C800C9C449 /* UILabelExtension.swift */,
+				71E7ACD127F498E900C9C449 /* UIFontExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		71E7ACCC27F4911000C9C449 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				71E7ACCF27F497B900C9C449 /* ProximaNovaBold.otf */,
+				71E7ACCA27F490D600C9C449 /* ProximaNovaFont.otf */,
+			);
+			path = fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,6 +272,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				71CB216127F10642002312C7 /* LaunchScreen.storyboard in Resources */,
+				71E7ACD027F497B900C9C449 /* ProximaNovaBold.otf in Resources */,
+				71E7ACCB27F490D600C9C449 /* ProximaNovaFont.otf in Resources */,
 				71CB215E27F10642002312C7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,7 +301,9 @@
 			files = (
 				71CB215227F1063F002312C7 /* AppDelegate.swift in Sources */,
 				71CB215C27F1063F002312C7 /* MovieApp.xcdatamodeld in Sources */,
+				71E7ACCE27F491C800C9C449 /* UILabelExtension.swift in Sources */,
 				71CB215427F1063F002312C7 /* SceneDelegate.swift in Sources */,
+				71E7ACD227F498E900C9C449 /* UIFontExtension.swift in Sources */,
 				E9514BFD5A70A91974142650 /* InitialViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

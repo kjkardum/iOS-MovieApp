@@ -6,7 +6,6 @@ import Foundation
 import UIKit
 import SFSafeSymbols
 import SnapKit
-import SwiftUI
 
 class InitialViewController: UIViewController, UIScrollViewDelegate {
     
@@ -23,6 +22,10 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewDidLoad() {
+        /*for family in UIFont.familyNames.sorted() {
+            let names = UIFont.fontNames(forFamilyName: family)
+            print("Family: \(family) Font names: \(names)")
+        }*/
         super.viewDidLoad()
         
         view.backgroundColor = .gray
@@ -34,15 +37,9 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
+        let detailsOverviewTitle = UILabel(text: "Overview", fontFamily: "Proxima Nova", fontStyle: .headline, bold: true)
         
-        let detailsOverviewTitle = UILabel()
-        detailsOverviewTitle.font = UIFont.boldSystemFont(ofSize: 24)
-        detailsOverviewTitle.text = "Overview"
-        
-        let detailsOverviewContent = UILabel()
-        detailsOverviewContent.font = UIFont.systemFont(ofSize: 12)
-        detailsOverviewContent.text = "After being held captive in an Afghan cave, billionare engineer Tony Stark creates a unique weaponized suit of armor to fight evil."
-        detailsOverviewContent.numberOfLines = 0
+        let detailsOverviewContent = UILabel(text: "After being held captive in an Afghan cave, billionare engineer Tony Stark creates a unique weaponized suit of armor to fight evil.", fontFamily: "Proxima Nova", fontStyle: .footnote, numberOfLines: 0)
         
         let imageContainer = UIView()
         imageContainer.backgroundColor = .darkGray
@@ -71,10 +68,10 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
         ]
         for person in peopleWorkingOnMovie {
             let personName = person.nameComponent
-            personName.font = UIFont.boldSystemFont(ofSize: 12)
+            personName.font = UIFont.custom(name: "Proxima Nova", style: .footnote)?.bold()
             personName.text = person.name
             let personRole = person.roleComponent
-            personRole.font = UIFont.systemFont(ofSize: 12)
+            personRole.font = UIFont.custom(name: "Proxima Nova", style: .footnote)
             personRole.text = person.role
             textContainer.addSubview(personName)
             textContainer.addSubview(personRole)
@@ -91,32 +88,13 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
         movieLikeButton.tintColor = .white
         movieLikeButton.layer.cornerRadius = 20
         
-        let movieType = UILabel()
-        movieType.text = "Action, Science Fiction, Adventure"
-        movieType.textColor = .white
-        movieType.font = UIFont.systemFont(ofSize: 12)
+        let movieType = UILabel(text: "Action, Science Fiction, Adventure", color: .white)
+        let movieLength = UILabel(text: "2h 6m", color: .white)
+        let movieRelease = UILabel(text: "05/02/2008 (US)", color: .white)
+        let movieTitle = UILabel(text: "Iron man (2008)", fontStyle: .title2, color: .white)
+        let movieUserScoreValue = UILabel(text: "76%", fontStyle: .title2, color: .systemPink)
+        let movieUserScore = UILabel(text: "User Score", fontStyle: .title2, color: .white)
         
-        let movieLength = UILabel()
-        movieLength.text = "2h 6m"
-        movieLength.textColor = .white
-        movieLength.font = UIFont.boldSystemFont(ofSize: 12)
-        
-        let movieRelease = UILabel()
-        movieRelease.text = "05/02/2008 (US)"
-        movieRelease.textColor = .white
-        movieRelease.font = UIFont.systemFont(ofSize: 12)
-        
-        let movieTitle = UILabel()
-        movieTitle.text = "Iron man (2008)"
-        movieTitle.textColor = .white
-        movieTitle.font = UIFont.systemFont(ofSize: 24)
-        
-        let movieUserScoreValue = UILabel()
-        movieUserScoreValue.text = "76%"
-        movieUserScoreValue.textColor = .white
-        let movieUserScore = UILabel()
-        movieUserScore.text = "User Score"
-        movieUserScore.textColor = .white;
         imageView.addSubview(movieLikeButton)
         imageView.addSubview(movieType)
         imageView.addSubview(movieLength)
