@@ -128,7 +128,7 @@ class InitialViewController: UIViewController, UIScrollViewDelegate {
         textContainer.snp.makeConstraints {
             $0.top.equalTo(imageContainer.snp.bottom)
             $0.left.right.equalTo(view)
-            $0.bottom.equalTo(peopleWorkingOnMovie[3].roleComponent.snp.bottom).offset(90)
+            $0.bottom.equalTo(peopleWorkingOnMovie[3].roleComponent.snp.bottom).offset(390)
         }
         
         textBacking.snp.makeConstraints {
