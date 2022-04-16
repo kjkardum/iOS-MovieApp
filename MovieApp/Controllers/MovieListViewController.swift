@@ -11,6 +11,8 @@ import SnapKit
 
 class MovieListViewController : UIViewController {
     var searchBar: SearchBarView!
+    var sectionsList: MovieListSectionsListView!
+    
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -23,7 +25,6 @@ class MovieListViewController : UIViewController {
         buildView()
         setViewLayout()
         Task {
-            
             self.fillViewData()
         }
     }
@@ -32,19 +33,25 @@ class MovieListViewController : UIViewController {
         view.backgroundColor = .white
         
         searchBar = SearchBarView()
+        sectionsList = MovieListSectionsListView()
         
         view.addSubview(searchBar)
+        view.addSubview(sectionsList)
     }
     
     func setViewLayout() {
         searchBar.snp.makeConstraints{ make in
             make.left.right.equalToSuperview().inset(marginSmall)
-            make.top.equalToSuperview().inset(marginDefault)
-            make.bottom.equalToSuperview().inset(10)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(marginSmall)
+        }
+        sectionsList.snp.makeConstraints{ make in
+            make.top.equalTo(searchBar.snp.bottom).offset(marginDefault)
+            make.left.right.bottom.equalToSuperview()
         }
     }
     
     func fillViewData() {
+        //demoSection.updateData(title: "What's popular", filters: ["Streaming", "ON TV", "For Rent", "In theaters", "Something"])
     }
     
 }

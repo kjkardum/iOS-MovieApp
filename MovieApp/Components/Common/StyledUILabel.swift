@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 
 class StyledUILabel : UILabel {
-    convenience init(text: String = "", bold: Bool = false, fontStyle: UIFont.TextStyle = .footnote, color: UIColor = .black) {
+    convenience init(text: String = "", bold: Bool = false, fontStyle: UIFont.TextStyle = .footnote, color: UIColor = .black, numberOfLines: Int = 0) {
         self.init()
         self.text = text
-        self.numberOfLines = 0
+        self.numberOfLines = numberOfLines
         self.textColor = color
         guard let customFont = UIFont.custom(name: "Proxima Nova", style: fontStyle) else {
             fatalError("Failed to load font")

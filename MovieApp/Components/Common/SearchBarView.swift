@@ -27,7 +27,7 @@ class SearchBarView : UIView, UITextFieldDelegate {
     func buildView() {
         searchBox = UITextField()
         searchBox.placeholder = "Search"
-        searchBox.backgroundColor = UIColor(red: CGFloat(234.0/255.0), green: CGFloat(234.0/255.0), blue: CGFloat(235.0/255.0), alpha: CGFloat(1.0))
+        searchBox.backgroundColor = HexColorHelper.GetUIColor(hex: lightGrayColorCode)
         searchBox.layer.cornerRadius = 10
         searchBox.delegate = self
         
@@ -35,12 +35,14 @@ class SearchBarView : UIView, UITextFieldDelegate {
         searchIcon.tintColor = .black
         let searchIconWrapper = UIView()
         searchIconWrapper.addSubview(searchIcon)
+        
         searchBox.leftView = searchIconWrapper
         searchBox.leftViewMode = .always
         
         clearButton = UIButton.createIconButton(icon: .xmark, backgroundColor: UIColor(white: 1, alpha: 0), color: .black, iconSize: 10, target: self, action: #selector(clearSearchBox))
         let clearButtonWrapper = UIView()
         clearButtonWrapper.addSubview(clearButton)
+        
         searchBox.rightView = clearButtonWrapper
         searchBox.rightViewMode = .whileEditing
         
@@ -58,14 +60,14 @@ class SearchBarView : UIView, UITextFieldDelegate {
         if visible {
             cancelButton.isHidden = false
             searchBox.snp.remakeConstraints{ make in
-                make.left.equalToSuperview()
+                make.left.top.bottom.equalToSuperview()
                 make.right.equalTo(cancelButton.snp.left).offset(-10)
                 make.height.equalTo(40)
             }
         } else {
             cancelButton.isHidden = true
             searchBox.snp.remakeConstraints{ make in
-                make.left.equalToSuperview()
+                make.left.top.bottom.equalToSuperview()
                 make.right.equalToSuperview()
                 make.height.equalTo(40)
             }

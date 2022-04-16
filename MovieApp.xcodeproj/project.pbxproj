@@ -25,6 +25,14 @@
 		718896B92803570400399261 /* MovieDetailsOverviewPeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718896B82803570400399261 /* MovieDetailsOverviewPeopleView.swift */; };
 		718896BB28035E9A00399261 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718896BA28035E9A00399261 /* MovieListViewController.swift */; };
 		718896BD28036A8200399261 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718896BC28036A8200399261 /* SearchBarView.swift */; };
+		718896C028042D4200399261 /* MovieSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718896BF28042D4200399261 /* MovieSectionView.swift */; };
+		718896C22804366100399261 /* MovieSectionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718896C12804366100399261 /* MovieSectionListView.swift */; };
+		71C15F47280A09060041CD23 /* MovieSectionFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C15F46280A09060041CD23 /* MovieSectionFilterView.swift */; };
+		71C15F49280A13320041CD23 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C15F48280A13320041CD23 /* UIViewExtension.swift */; };
+		71C15F4C280A231C0041CD23 /* HexColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C15F4B280A231C0041CD23 /* HexColorHelper.swift */; };
+		71C15F4F280A25FB0041CD23 /* MovieAppData in Frameworks */ = {isa = PBXBuildFile; productRef = 71C15F4E280A25FB0041CD23 /* MovieAppData */; };
+		71C15F51280AB4450041CD23 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C15F50280AB4450041CD23 /* UIImageViewExtension.swift */; };
+		71C15F55280AB96D0041CD23 /* MovieListSectionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C15F54280AB96D0041CD23 /* MovieListSectionsListView.swift */; };
 		71CB215227F1063F002312C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CB215127F1063F002312C7 /* AppDelegate.swift */; };
 		71CB215427F1063F002312C7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CB215327F1063F002312C7 /* SceneDelegate.swift */; };
 		71CB215C27F1063F002312C7 /* MovieApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 71CB215A27F1063F002312C7 /* MovieApp.xcdatamodeld */; };
@@ -75,6 +83,13 @@
 		718896B82803570400399261 /* MovieDetailsOverviewPeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsOverviewPeopleView.swift; sourceTree = "<group>"; };
 		718896BA28035E9A00399261 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
 		718896BC28036A8200399261 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		718896BF28042D4200399261 /* MovieSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSectionView.swift; sourceTree = "<group>"; };
+		718896C12804366100399261 /* MovieSectionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSectionListView.swift; sourceTree = "<group>"; };
+		71C15F46280A09060041CD23 /* MovieSectionFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSectionFilterView.swift; sourceTree = "<group>"; };
+		71C15F48280A13320041CD23 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		71C15F4B280A231C0041CD23 /* HexColorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColorHelper.swift; sourceTree = "<group>"; };
+		71C15F50280AB4450041CD23 /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
+		71C15F54280AB96D0041CD23 /* MovieListSectionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListSectionsListView.swift; sourceTree = "<group>"; };
 		71CB214E27F1063F002312C7 /* MovieApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71CB215127F1063F002312C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71CB215327F1063F002312C7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +112,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71E7ACC627F23B8400C9C449 /* SFSafeSymbols in Frameworks */,
+				71C15F4F280A25FB0041CD23 /* MovieAppData in Frameworks */,
 				71CB218627F11684002312C7 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -130,6 +146,7 @@
 		7119B6B6280326E40036E826 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				718896BE28042D3300399261 /* MovieList */,
 				7119B6C3280327E70036E826 /* Common */,
 				7119B6B72803275B0036E826 /* MovieDetails */,
 			);
@@ -170,6 +187,33 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		718896BE28042D3300399261 /* MovieList */ = {
+			isa = PBXGroup;
+			children = (
+				71C15F52280AB92B0041CD23 /* Section */,
+				71C15F54280AB96D0041CD23 /* MovieListSectionsListView.swift */,
+			);
+			path = MovieList;
+			sourceTree = "<group>";
+		};
+		71C15F4A280A230F0041CD23 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				71C15F4B280A231C0041CD23 /* HexColorHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		71C15F52280AB92B0041CD23 /* Section */ = {
+			isa = PBXGroup;
+			children = (
+				718896BF28042D4200399261 /* MovieSectionView.swift */,
+				718896C12804366100399261 /* MovieSectionListView.swift */,
+				71C15F46280A09060041CD23 /* MovieSectionFilterView.swift */,
+			);
+			path = Section;
+			sourceTree = "<group>";
+		};
 		71CB214527F1063F002312C7 = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +237,7 @@
 		71CB215027F1063F002312C7 /* MovieApp */ = {
 			isa = PBXGroup;
 			children = (
+				71C15F4A280A230F0041CD23 /* Helpers */,
 				7119B6C628032CBB0036E826 /* Models */,
 				7119B6B6280326E40036E826 /* Components */,
 				7119B6B3280324D50036E826 /* Controllers */,
@@ -231,6 +276,8 @@
 				71E7ACD127F498E900C9C449 /* UIFontExtension.swift */,
 				718896B528034A9400399261 /* UIButtonExtension.swift */,
 				718896B12803325300399261 /* TimeIntervalExtension.swift */,
+				71C15F48280A13320041CD23 /* UIViewExtension.swift */,
+				71C15F50280AB4450041CD23 /* UIImageViewExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -263,6 +310,7 @@
 			packageProductDependencies = (
 				71CB218527F11684002312C7 /* SnapKit */,
 				71E7ACC527F23B8400C9C449 /* SFSafeSymbols */,
+				71C15F4E280A25FB0041CD23 /* MovieAppData */,
 			);
 			productName = MovieApp;
 			productReference = 71CB214E27F1063F002312C7 /* MovieApp.app */;
@@ -339,6 +387,7 @@
 			packageReferences = (
 				71CB218427F11684002312C7 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				71E7ACC427F23B8400C9C449 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
+				71C15F4D280A25FB0041CD23 /* XCRemoteSwiftPackageReference "MovieAppData" */,
 			);
 			productRefGroup = 71CB214F27F1063F002312C7 /* Products */;
 			projectDirPath = "";
@@ -385,23 +434,30 @@
 			files = (
 				7119B6C828032CE40036E826 /* MovieModel.swift in Sources */,
 				7119B6D028032EE50036E826 /* MovieRecommendationModel.swift in Sources */,
+				71C15F47280A09060041CD23 /* MovieSectionFilterView.swift in Sources */,
 				71CB215227F1063F002312C7 /* AppDelegate.swift in Sources */,
 				71CB215C27F1063F002312C7 /* MovieApp.xcdatamodeld in Sources */,
 				718896B22803325300399261 /* TimeIntervalExtension.swift in Sources */,
+				71C15F55280AB96D0041CD23 /* MovieListSectionsListView.swift in Sources */,
 				7119B6CE28032EA40036E826 /* MovieReviewModel.swift in Sources */,
 				71CB215427F1063F002312C7 /* SceneDelegate.swift in Sources */,
 				718896B92803570400399261 /* MovieDetailsOverviewPeopleView.swift in Sources */,
 				7119B6C5280328130036E826 /* StyledUILabel.swift in Sources */,
 				71E7ACD227F498E900C9C449 /* UIFontExtension.swift in Sources */,
+				718896C028042D4200399261 /* MovieSectionView.swift in Sources */,
 				7119B6C2280327CF0036E826 /* MovieDetailsRecommendationsView.swift in Sources */,
 				7119B6BE280327A70036E826 /* MovieDetailsCastView.swift in Sources */,
 				7119B6BB2803278F0036E826 /* MovieDetailsOverviewView.swift in Sources */,
+				71C15F4C280A231C0041CD23 /* HexColorHelper.swift in Sources */,
 				7119B6C0280327B40036E826 /* MovieDetailsSocialView.swift in Sources */,
 				7119B6CC28032E400036E826 /* MovieCastModel.swift in Sources */,
 				718896B4280349F800399261 /* Constants.swift in Sources */,
 				718896B628034A9400399261 /* UIButtonExtension.swift in Sources */,
 				7119B6CA28032DE80036E826 /* MoviePersonModel.swift in Sources */,
 				718896BD28036A8200399261 /* SearchBarView.swift in Sources */,
+				71C15F51280AB4450041CD23 /* UIImageViewExtension.swift in Sources */,
+				718896C22804366100399261 /* MovieSectionListView.swift in Sources */,
+				71C15F49280A13320041CD23 /* UIViewExtension.swift in Sources */,
 				718896BB28035E9A00399261 /* MovieListViewController.swift in Sources */,
 				7119B6B9280327790036E826 /* MovieDetailsCoverView.swift in Sources */,
 				7119B6B5280326B70036E826 /* MovieDetailsController.swift in Sources */,
@@ -723,6 +779,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		71C15F4D280A25FB0041CD23 /* XCRemoteSwiftPackageReference "MovieAppData" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fiveagency/MovieAppData";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		71CB218427F11684002312C7 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -742,6 +806,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		71C15F4E280A25FB0041CD23 /* MovieAppData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71C15F4D280A25FB0041CD23 /* XCRemoteSwiftPackageReference "MovieAppData" */;
+			productName = MovieAppData;
+		};
 		71CB218527F11684002312C7 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 71CB218427F11684002312C7 /* XCRemoteSwiftPackageReference "SnapKit" */;
