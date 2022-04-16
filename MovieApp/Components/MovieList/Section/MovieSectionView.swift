@@ -8,19 +8,20 @@
 import Foundation
 import UIKit
 import SnapKit
+import MovieAppData
 
-class MovieSectionView : UIView {
+class MovieSectionView : UIView, MovieFilterDelegate {
     var titleLabel: StyledUILabel!
     var filtersScrollView: UIScrollView!
     var filtersStackView: MovieSectionFilterView!
     var movieList: MovieSectionListView!
+    var moviesInSection: [MovieAppData.MovieModel] = []
     
     init() {
         super.init(frame: CGRect())
         
         buildView()
         setViewLayout()
-        filtersStackView.setFilters(filters: ["Demo", "List"])
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -31,17 +32,13 @@ class MovieSectionView : UIView {
         filtersScrollView = UIScrollView()
         filtersScrollView.showsHorizontalScrollIndicator = false
         filtersStackView = MovieSectionFilterView()
+        filtersStackView.delegate = self
         filtersScrollView.addSubview(filtersStackView)
         
         addSubview(titleLabel)
         addSubview(filtersScrollView)
         addSubview(movieList)
         
-    }
-    
-    func updateData(title: String, filters: [String]) {
-        titleLabel.text = title
-        filtersStackView.setFilters(filters: filters)
     }
     
     func setViewLayout() {
@@ -64,5 +61,29 @@ class MovieSectionView : UIView {
             make.left.right.bottom.equalToSuperview()
             make.height.equalTo(movieListItemSize)
         }
+    }
+    
+    func selectFilter(filter: MovieFilter) {
+        movieList.updateData(movies: moviesInSection.filter{movie in
+            let genre = MovieEnumsStringConverter.convert(movie.genre)
+            let filter = MovieEnumsStringConverter.convert(filter)
+            return genre == filter || !MovieEnumsStringConverter.genreFilterStrings.contains(filter)
+        })
+    }
+    
+    func updateData(dataSection: (MovieGroup, [MovieAppData.MovieModel])) {
+        titleLabel.text = MovieEnumsStringConverter.convert(dataSection.0)
+        moviesInSection = dataSection.1
+        filtersStackView.setFilters(filters: dataSection.0.filters.filter{item in
+            let filter = MovieEnumsStringConverter.convert(item)
+            if !MovieEnumsStringConverter.genreFilterStrings.contains(filter) {
+                return true
+            }
+            let moviesInFilter = moviesInSection.filter{movie in
+                let genre = MovieEnumsStringConverter.convert(movie.genre)
+                return genre == filter
+            }
+            return moviesInFilter.count > 0
+        })
     }
 }

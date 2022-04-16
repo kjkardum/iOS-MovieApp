@@ -8,10 +8,11 @@
 import Foundation
 import UIKit
 import SnapKit
+import MovieAppData
 
 class MovieListSectionsListView : UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieSectionsCollection: UICollectionView!
-    var sectionsData: [String] = ["Demo", "Test", "Third", "Fourth"]
+    var sectionsData: [(MovieGroup,[MovieAppData.MovieModel])] = []
     init() {
         super.init(frame: CGRect())
         
@@ -45,16 +46,20 @@ class MovieListSectionsListView : UIView, UICollectionViewDataSource, UICollecti
         }
     }
     
+    func updateData(groups: [MovieGroup : [MovieAppData.MovieModel]]) {
+        sectionsData = groups.map { (key, value) in (key, value)}
+        movieSectionsCollection.reloadData()
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.sectionsData.count
+        return sectionsData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListSectionCell.id, for: indexPath) as! MovieListSectionCell
         let data = self.sectionsData[indexPath.item]
-        
-        
+        cell.updateData(dataSection: data)
         return cell
     }
     
@@ -89,5 +94,9 @@ class MovieListSectionCell : UICollectionViewCell {
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         return layoutAttributes
+    }
+    
+    func updateData(dataSection: (MovieGroup, [MovieAppData.MovieModel])) {
+        section.updateData(dataSection: dataSection)
     }
 }

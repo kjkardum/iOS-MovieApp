@@ -9,4 +9,5 @@ import Foundation
 protocol SearchBoxDelegate {
     func onSearchBoxFocus() -> Void
     func onSearchBoxUnfocus() -> Void
+    func onSearchBoxChange(input: String) -> Void
 }

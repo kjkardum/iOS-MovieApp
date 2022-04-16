@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SnapKit
+import MovieAppData
 
 class MovieListViewController : UIViewController, SearchBoxDelegate {
     var searchBar: SearchBarView!
@@ -59,7 +60,14 @@ class MovieListViewController : UIViewController, SearchBoxDelegate {
     }
     
     func fillViewData() {
-        //demoSection.updateData(title: "What's popular", filters: ["Streaming", "ON TV", "For Rent", "In theaters", "Something"])
+        let movies = Movies.all()
+        let groups = MovieGroup.allCases.reduce([MovieGroup : [MovieAppData.MovieModel]]()) { (dict, group) -> [MovieGroup : [MovieAppData.MovieModel]] in
+            var dict = dict
+            dict[group] = movies.filter{ $0.group.contains(group) }
+            return dict
+        }
+        sectionsList.updateData(groups: groups)
+        searchResultsList.updateData(movies: movies)
     }
     
     func onSearchBoxFocus() {
@@ -69,5 +77,10 @@ class MovieListViewController : UIViewController, SearchBoxDelegate {
     func onSearchBoxUnfocus() {
         sectionsList.isHidden = false
         searchResultsList.isHidden = true
+    }
+    
+    func onSearchBoxChange(input: String) {
+        let movies = Movies.all().filter{ movie in input == "" || movie.title.lowercased().contains(input.lowercased()) }
+        searchResultsList.updateData(movies: movies)
     }
 }

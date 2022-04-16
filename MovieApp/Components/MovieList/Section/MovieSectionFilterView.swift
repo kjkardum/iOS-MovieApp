@@ -8,11 +8,13 @@
 import Foundation
 import UIKit
 import SnapKit
+import MovieAppData
 
 class MovieSectionFilterView : UIStackView {
     var mySpacing: CGFloat = 22
-    var filters: [String] = []
-    var selectedFilter: UIButton?
+    var filters: [MovieFilter] = []
+    var selectedFilter: FilterButton?
+    var delegate: MovieFilterDelegate?
     
     convenience init() {
         self.init(frame: CGRect())
@@ -24,7 +26,7 @@ class MovieSectionFilterView : UIStackView {
         spacing = mySpacing
     }
     
-    func setFilters(filters: [String]) {
+    func setFilters(filters: [MovieFilter]) {
         self.filters = filters
         fillGrid()
     }
@@ -34,8 +36,7 @@ class MovieSectionFilterView : UIStackView {
             item.removeFromSuperview()
         }
         for item in 0 ..< filters.count {
-            let button = UIButton()
-            button.setTitle(filters[item], for: .normal)
+            let button = FilterButton(value: filters[item])
             button.setTitleColor(.black, for: .normal)
             button.titleLabel?.font = StyledUILabel.getStyledFont(fontStyle: .callout, bold: false)
             button.addTarget(self, action: #selector(selectFilter), for: .touchUpInside)
@@ -46,7 +47,7 @@ class MovieSectionFilterView : UIStackView {
         }
     }
     
-    @objc func selectFilter(button: UIButton) {
+    @objc func selectFilter(button: FilterButton) {
         if let selectedFilter = selectedFilter {
             selectedFilter.titleLabel?.font = StyledUILabel.getStyledFont(fontStyle: .callout, bold: false)
             selectedFilter.addBorder(toEdge: [])
@@ -54,5 +55,7 @@ class MovieSectionFilterView : UIStackView {
         button.titleLabel?.font = StyledUILabel.getStyledFont(fontStyle: .callout, bold: true)
         button.addBorder(toEdge: .bottom, withColor: HexColorHelper.GetUIColor(hex: blueColorCode) ?? .black, thickness: 3.0)
         selectedFilter = button
+        
+        delegate?.selectFilter(filter: button.filterValue)
     }
 }

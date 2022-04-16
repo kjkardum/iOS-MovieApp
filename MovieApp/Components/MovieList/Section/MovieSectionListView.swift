@@ -13,7 +13,7 @@ import MovieAppData
 class MovieSectionListView : UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieListCollection: UICollectionView!
     
-    var availableMovies = ["Test", "Demo", "Test", "Test", "Test", "Test", "demo"]
+    var availableMovies: [MovieAppData.MovieModel] = []
     
     init() {
         super.init(frame: CGRect())
@@ -54,12 +54,17 @@ class MovieSectionListView : UIView, UICollectionViewDataSource, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieSectionCell.id, for: indexPath) as! MovieSectionCell
         let data = self.availableMovies[indexPath.item]
-        
+        cell.updateData(movie: data)
         
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.size.height/1.46, height: collectionView.frame.size.height)
+    }
+    
+    func updateData(movies: [MovieAppData.MovieModel]) {
+        availableMovies = movies
+        movieListCollection.reloadData()
     }
     
 }
@@ -72,11 +77,9 @@ class MovieSectionCell : UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let movie = Movies.all()[0]
         let image = UIImageView()
         self.contentView.addSubview(image)
         self.image = image
-        image.load(url: URL(string: movie.imageUrl)!)
         image.contentMode = .scaleToFill
         image.layer.cornerRadius = 15
         image.layer.masksToBounds = true
@@ -105,6 +108,12 @@ class MovieSectionCell : UICollectionViewCell {
     
     @objc func likeMovie(button: UIButton) {
         
+    }
+    
+    func updateData(movie: MovieAppData.MovieModel) {
+        if let url = URL(string: movie.imageUrl) {
+            image.load(url: url)
+        }
     }
     
 }

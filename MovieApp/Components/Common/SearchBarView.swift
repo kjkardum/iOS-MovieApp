@@ -48,6 +48,8 @@ class SearchBarView : UIView, UITextFieldDelegate {
         searchBox.rightView = clearButtonWrapper
         searchBox.rightViewMode = .whileEditing
         
+        searchBox.addTarget(self, action: #selector(searchBoxDidChange), for: .editingChanged)
+        
         cancelButton = UIButton()
         cancelButton.addTarget(self, action: #selector(cancelSearchBox), for: .touchUpInside)
         cancelButton.setTitleColor(.black, for: .normal)
@@ -107,5 +109,9 @@ class SearchBarView : UIView, UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         changeCancelButtonVisibility(visible: false)
         delegate?.onSearchBoxUnfocus()
+    }
+    
+    @objc func searchBoxDidChange(searchBox: UITextField) {
+        delegate?.onSearchBoxChange(input: searchBox.text ?? "")
     }
 }

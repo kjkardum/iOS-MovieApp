@@ -12,7 +12,7 @@ import MovieAppData
 
 class MovieSearchResults : UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieResultsCollection: UICollectionView!
-    var results: [String] = ["Demo", "Test", "Third", "Fourth"]
+    var results: [MovieAppData.MovieModel] = []
     init() {
         super.init(frame: CGRect())
         
@@ -56,13 +56,18 @@ class MovieSearchResults : UIView, UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieSearchResultCell.id, for: indexPath) as! MovieSearchResultCell
         let data = self.results[indexPath.item]
-        
+        cell.updateData(imageUrl: data.imageUrl, title: data.title, shortDescription: data.description)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 200)
+    }
+    
+    func updateData(movies: [MovieAppData.MovieModel]) {
+        results = movies
+        movieResultsCollection.reloadData()
     }
 }
 
@@ -76,8 +81,6 @@ class MovieSearchResultCell : UICollectionViewCell {
         super.init(frame: frame)
         buildViews()
         setViewLayout()
-        let movie = Movies.all()[0]
-        updateData(imageUrl: movie.imageUrl, title: movie.title, shortDescription: movie.description)
     }
     
     required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
