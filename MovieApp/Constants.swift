@@ -8,6 +8,7 @@
 import Foundation
 
 let marginDefault = 24
+let marginMedium = 16
 let marginSmall = 8
 
 

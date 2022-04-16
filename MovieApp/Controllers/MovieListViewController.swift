@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 import SnapKit
 
-class MovieListViewController : UIViewController {
+class MovieListViewController : UIViewController, SearchBoxDelegate {
     var searchBar: SearchBarView!
     var sectionsList: MovieListSectionsListView!
-    
+    var searchResultsList: MovieSearchResults!
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -34,9 +34,13 @@ class MovieListViewController : UIViewController {
         
         searchBar = SearchBarView()
         sectionsList = MovieListSectionsListView()
+        searchResultsList = MovieSearchResults()
+        searchBar.delegate = self
         
         view.addSubview(searchBar)
         view.addSubview(sectionsList)
+        view.addSubview(searchResultsList)
+        searchResultsList.isHidden = true
     }
     
     func setViewLayout() {
@@ -48,10 +52,22 @@ class MovieListViewController : UIViewController {
             make.top.equalTo(searchBar.snp.bottom).offset(marginDefault)
             make.left.right.bottom.equalToSuperview()
         }
+        searchResultsList.snp.makeConstraints{ make in
+            make.top.equalTo(searchBar.snp.bottom).offset(marginDefault)
+            make.left.right.bottom.equalToSuperview()
+        }
     }
     
     func fillViewData() {
         //demoSection.updateData(title: "What's popular", filters: ["Streaming", "ON TV", "For Rent", "In theaters", "Something"])
     }
     
+    func onSearchBoxFocus() {
+        sectionsList.isHidden = true
+        searchResultsList.isHidden = false
+    }
+    func onSearchBoxUnfocus() {
+        sectionsList.isHidden = false
+        searchResultsList.isHidden = true
+    }
 }

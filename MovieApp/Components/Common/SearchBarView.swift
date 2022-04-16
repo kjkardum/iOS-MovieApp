@@ -15,6 +15,8 @@ class SearchBarView : UIView, UITextFieldDelegate {
     var clearButton: UIButton!
     var cancelButton: UIButton!
     
+    var delegate: SearchBoxDelegate?
+    
     init() {
         super.init(frame: CGRect())
         
@@ -100,8 +102,10 @@ class SearchBarView : UIView, UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         changeCancelButtonVisibility(visible: true)
+        delegate?.onSearchBoxFocus()
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
         changeCancelButtonVisibility(visible: false)
+        delegate?.onSearchBoxUnfocus()
     }
 }
