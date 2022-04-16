@@ -28,10 +28,14 @@ class SearchBarView : UIView, UITextFieldDelegate {
     
     func buildView() {
         searchBox = UITextField()
-        searchBox.placeholder = "Search"
+        searchBox.attributedPlaceholder = NSAttributedString(
+            string: "Search",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]
+        )
         searchBox.backgroundColor = HexColorHelper.GetUIColor(hex: lightGrayColorCode)
         searchBox.layer.cornerRadius = 10
         searchBox.delegate = self
+        searchBox.textColor = .darkGray
         
         searchIcon = UIImageView(image: UIImage(systemSymbol: .magnifyingglass))
         searchIcon.tintColor = .black

@@ -35,6 +35,7 @@ class MovieListSectionsListView : UIView, UICollectionViewDataSource, UICollecti
         movieSectionsCollection.isScrollEnabled = true
         movieSectionsCollection.contentInset = UIEdgeInsets(top: CGFloat(Float(marginSmall)), left: 0, bottom: CGFloat(Float(marginSmall)), right: 0)
         movieSectionsCollection.showsVerticalScrollIndicator = false
+        movieSectionsCollection.backgroundColor = .white
         
         addSubview(movieSectionsCollection)
         
