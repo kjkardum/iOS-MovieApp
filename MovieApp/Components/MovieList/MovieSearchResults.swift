@@ -13,12 +13,12 @@ import MovieAppData
 class MovieSearchResults : UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieResultsCollection: UICollectionView!
     var results: [MovieAppData.MovieModel] = []
+    
     init() {
         super.init(frame: CGRect())
         
         buildView()
         setViewLayout()
-        
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -37,6 +37,7 @@ class MovieSearchResults : UIView, UICollectionViewDataSource, UICollectionViewD
         movieResultsCollection.showsVerticalScrollIndicator = false
         movieResultsCollection.layer.masksToBounds = false
         movieResultsCollection.backgroundColor = .white
+        
         layer.masksToBounds = true
         
         addSubview(movieResultsCollection)
@@ -127,10 +128,6 @@ class MovieSearchResultCell : UICollectionViewCell {
         self.image.load(url: URL(string: imageUrl)!)
         self.title.text = title
         self.shortDescription.text = shortDescription
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
     }
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

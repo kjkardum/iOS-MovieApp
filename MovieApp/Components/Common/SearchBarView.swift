@@ -64,6 +64,20 @@ class SearchBarView : UIView, UITextFieldDelegate {
         
     }
     
+    func setViewLayout() {
+        changeCancelButtonVisibility(visible: false)
+        searchIcon.snp.makeConstraints{ make in
+            make.edges.equalToSuperview().inset(10)
+        }
+        clearButton.snp.makeConstraints{ make in
+            make.edges.equalToSuperview().inset(10)
+        }
+        cancelButton.snp.makeConstraints{ make in
+            make.right.equalToSuperview().inset(10)
+            make.height.equalTo(searchBox)
+        }
+    }
+    
     func changeCancelButtonVisibility(visible: Bool) {
         if visible {
             cancelButton.isHidden = false
@@ -79,20 +93,6 @@ class SearchBarView : UIView, UITextFieldDelegate {
                 make.right.equalToSuperview()
                 make.height.equalTo(40)
             }
-        }
-    }
-    
-    func setViewLayout() {
-        changeCancelButtonVisibility(visible: false)
-        searchIcon.snp.makeConstraints{ make in
-            make.edges.equalToSuperview().inset(10)
-        }
-        clearButton.snp.makeConstraints{ make in
-            make.edges.equalToSuperview().inset(10)
-        }
-        cancelButton.snp.makeConstraints{ make in
-            make.right.equalToSuperview().inset(10)
-            make.height.equalTo(searchBox)
         }
     }
     

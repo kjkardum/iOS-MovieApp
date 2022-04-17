@@ -27,10 +27,11 @@ class MovieSectionView : UIView, MovieFilterDelegate {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func buildView() {
-        titleLabel = StyledUILabel(text:"Demo group", bold: true, fontStyle: .title3, color: HexColorHelper.GetUIColor(hex: blueColorCode) ?? .red)
+        titleLabel = StyledUILabel(text:"-", bold: true, fontStyle: .title3, color: HexColorHelper.GetUIColor(hex: blueColorCode) ?? .red)
         movieList = MovieSectionListView()
         filtersScrollView = UIScrollView()
         filtersScrollView.showsHorizontalScrollIndicator = false
+        
         filtersStackView = MovieSectionFilterView()
         filtersStackView.delegate = self
         filtersScrollView.addSubview(filtersStackView)

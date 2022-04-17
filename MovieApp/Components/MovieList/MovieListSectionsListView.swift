@@ -13,12 +13,12 @@ import MovieAppData
 class MovieListSectionsListView : UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieSectionsCollection: UICollectionView!
     var sectionsData: [(MovieGroup,[MovieAppData.MovieModel])] = []
+    
     init() {
         super.init(frame: CGRect())
         
         buildView()
         setViewLayout()
-        
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -52,7 +52,6 @@ class MovieListSectionsListView : UIView, UICollectionViewDataSource, UICollecti
         movieSectionsCollection.reloadData()
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return sectionsData.count
     }
@@ -74,23 +73,21 @@ class MovieListSectionCell : UICollectionViewCell {
     static var id = "MovieListSectionCell"
     weak var section: MovieSectionView!
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         let section = MovieSectionView()
         self.contentView.addSubview(section)
         self.section = section
+        
         addSubview(section)
+        
         section.snp.makeConstraints{ make in
             make.edges.equalToSuperview()
         }
     }
     
     required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-    }
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height

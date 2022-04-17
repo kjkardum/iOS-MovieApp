@@ -12,7 +12,6 @@ import MovieAppData
 
 class MovieSectionListView : UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieListCollection: UICollectionView!
-    
     var availableMovies: [MovieAppData.MovieModel] = []
     
     init() {
@@ -20,15 +19,14 @@ class MovieSectionListView : UIView, UICollectionViewDataSource, UICollectionVie
         
         buildView()
         setViewLayout()
-        
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func buildView() {
-        
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
+        
         movieListCollection = UICollectionView(frame: CGRect(), collectionViewLayout: flowLayout)
         movieListCollection.dataSource = self
         movieListCollection.delegate = self
@@ -71,12 +69,12 @@ class MovieSectionListView : UIView, UICollectionViewDataSource, UICollectionVie
 
 class MovieSectionCell : UICollectionViewCell {
     static var id = "MovieCell"
-    
     weak var image: UIImageView!
     weak var heartButton: UIButton!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         let image = UIImageView()
         self.contentView.addSubview(image)
         self.image = image
@@ -91,6 +89,7 @@ class MovieSectionCell : UICollectionViewCell {
             target: self, action: #selector(likeMovie))
         self.contentView.addSubview(heartButton)
         self.heartButton = heartButton
+        
         image.snp.makeConstraints{ make in
             make.edges.equalToSuperview()
         }
@@ -102,13 +101,7 @@ class MovieSectionCell : UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-    }
-    
-    @objc func likeMovie(button: UIButton) {
-        
-    }
+    @objc func likeMovie(button: UIButton) { }
     
     func updateData(movie: MovieAppData.MovieModel) {
         if let url = URL(string: movie.imageUrl) {

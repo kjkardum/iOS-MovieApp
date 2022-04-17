@@ -26,6 +26,8 @@ class MovieListViewController : UIViewController, SearchBoxDelegate {
         buildView()
         setViewLayout()
         Task {
+            //DB or Network ACCESS WILL BE ADDED LATER, SIMULATED WITH awaiting Sleep
+            try await Task.sleep(nanoseconds: 700_000_000)
             self.fillViewData()
         }
     }
