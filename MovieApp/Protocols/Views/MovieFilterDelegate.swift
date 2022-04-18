@@ -9,5 +9,5 @@ import Foundation
 import MovieAppData
 
 protocol MovieFilterDelegate {
-    func selectFilter(filter: MovieFilter) -> Void
+    func selectFilter(filter: MovieFilter, animationDuration: TimeInterval) -> Void
 }

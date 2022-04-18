@@ -73,12 +73,12 @@ class MovieListViewController : UIViewController, SearchBoxDelegate {
     }
     
     func onSearchBoxFocus() {
-        sectionsList.isHidden = true
-        searchResultsList.isHidden = false
+        sectionsList.fadeOut()
+        searchResultsList.fadeIn()
     }
     func onSearchBoxUnfocus() {
-        sectionsList.isHidden = false
-        searchResultsList.isHidden = true
+        sectionsList.fadeIn(0)
+        searchResultsList.fadeOut()
     }
     
     func onSearchBoxChange(input: String) {
