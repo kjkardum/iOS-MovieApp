@@ -65,7 +65,12 @@ class SearchBarView : UIView, UITextFieldDelegate {
     }
     
     func setViewLayout() {
-        changeCancelButtonVisibility(visible: false)
+        searchBox.snp.makeConstraints{ make in
+            make.left.top.bottom.equalToSuperview()
+            make.right.equalToSuperview().inset(0)
+            make.height.equalTo(40)
+        }
+        cancelButton.isHidden = true
         searchIcon.snp.makeConstraints{ make in
             make.edges.equalToSuperview().inset(10)
         }
@@ -79,19 +84,23 @@ class SearchBarView : UIView, UITextFieldDelegate {
     }
     
     func changeCancelButtonVisibility(visible: Bool) {
+        let animationSpeed = 0.2
         if visible {
-            cancelButton.isHidden = false
-            searchBox.snp.remakeConstraints{ make in
-                make.left.top.bottom.equalToSuperview()
-                make.right.equalTo(cancelButton.snp.left).offset(-10)
-                make.height.equalTo(40)
+            UIView.animate(withDuration: animationSpeed) { [self] in
+                searchBox.snp.updateConstraints{ make in
+                    make.right.equalToSuperview().inset(cancelButton.frame.width + 20)
+                }
+                self.layoutIfNeeded()
             }
+            cancelButton.fadeIn(animationSpeed)
+            
         } else {
-            cancelButton.isHidden = true
-            searchBox.snp.remakeConstraints{ make in
-                make.left.top.bottom.equalToSuperview()
-                make.right.equalToSuperview()
-                make.height.equalTo(40)
+            cancelButton.fadeOut(animationSpeed)
+            UIView.animate(withDuration: animationSpeed) { [self] in
+                searchBox.snp.updateConstraints{ make in
+                    make.right.equalToSuperview().inset(0)
+                }
+                self.layoutIfNeeded()
             }
         }
     }

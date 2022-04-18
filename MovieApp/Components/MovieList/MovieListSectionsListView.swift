@@ -13,6 +13,7 @@ import MovieAppData
 class MovieListSectionsListView : UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieSectionsCollection: UICollectionView!
     var sectionsData: [(MovieGroup,[MovieAppData.MovieModel])] = []
+    var selectedFilters: [MovieGroup : MovieFilter] = [:]
     
     init() {
         super.init(frame: CGRect())
@@ -59,7 +60,12 @@ class MovieListSectionsListView : UIView, UICollectionViewDataSource, UICollecti
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListSectionCell.id, for: indexPath) as! MovieListSectionCell
         let data = self.sectionsData[indexPath.item]
-        cell.updateData(dataSection: data)
+        cell.updateData(
+            dataSection: data,
+            selectFilter: { [self] filter in
+                selectedFilters[data.0] = filter
+            },
+            filter: selectedFilters[data.0])
         return cell
     }
     
@@ -94,7 +100,7 @@ class MovieListSectionCell : UICollectionViewCell {
         return layoutAttributes
     }
     
-    func updateData(dataSection: (MovieGroup, [MovieAppData.MovieModel])) {
-        section.updateData(dataSection: dataSection)
+    func updateData(dataSection: (MovieGroup, [MovieAppData.MovieModel]), selectFilter: @escaping ((MovieFilter) -> Void), filter: MovieFilter? = nil) {
+        section.updateData(dataSection: dataSection, selectFilter: selectFilter, filter: filter)
     }
 }

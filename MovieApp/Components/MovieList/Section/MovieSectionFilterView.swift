@@ -26,12 +26,12 @@ class MovieSectionFilterView : UIStackView {
         spacing = mySpacing
     }
     
-    func setFilters(filters: [MovieFilter]) {
+    func setFilters(filters: [MovieFilter], currentFilter: MovieFilter? = nil) {
         self.filters = filters
-        fillGrid()
+        fillGrid(currentFilter: currentFilter)
     }
     
-    func fillGrid(){
+    func fillGrid(currentFilter: MovieFilter? = nil){
         arrangedSubviews.forEach{ item in
             item.removeFromSuperview()
         }
@@ -41,13 +41,13 @@ class MovieSectionFilterView : UIStackView {
             button.titleLabel?.font = StyledUILabel.getStyledFont(fontStyle: .callout, bold: false)
             button.addTarget(self, action: #selector(selectFilter), for: .touchUpInside)
             addArrangedSubview(button)
-            if item == 0 {
-                selectFilter(button: button)
+            if item == 0 && currentFilter == nil || filters[item] == currentFilter {
+                selectFilter(button: button, onLoad: true)
             }
         }
     }
     
-    @objc func selectFilter(button: FilterButton) {
+    @objc func selectFilter(button: FilterButton, onLoad: Bool = false) {
         if let selectedFilter = selectedFilter {
             selectedFilter.titleLabel?.font = StyledUILabel.getStyledFont(fontStyle: .callout, bold: false)
             selectedFilter.addBorder(toEdge: [])
@@ -56,6 +56,10 @@ class MovieSectionFilterView : UIStackView {
         button.addBorder(toEdge: .bottom, withColor: HexColorHelper.GetUIColor(hex: blueColorCode) ?? .black, thickness: 3.0)
         selectedFilter = button
         
-        delegate?.selectFilter(filter: button.filterValue)
+        if onLoad {
+            delegate?.selectFilter(filter: button.filterValue, animationDuration: 0)
+        } else {
+            delegate?.selectFilter(filter: button.filterValue, animationDuration: 0.2)
+        }
     }
 }

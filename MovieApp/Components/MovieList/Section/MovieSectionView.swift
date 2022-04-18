@@ -16,6 +16,7 @@ class MovieSectionView : UIView, MovieFilterDelegate {
     var filtersStackView: MovieSectionFilterView!
     var movieList: MovieSectionListView!
     var moviesInSection: [MovieAppData.MovieModel] = []
+    var parentSelectFilter: ((MovieFilter) -> Void)? = nil
     
     init() {
         super.init(frame: CGRect())
@@ -64,15 +65,20 @@ class MovieSectionView : UIView, MovieFilterDelegate {
         }
     }
     
-    func selectFilter(filter: MovieFilter) {
-        movieList.updateData(movies: moviesInSection.filter{movie in
-            let genre = MovieEnumsStringConverter.convert(movie.genre)
-            let filter = MovieEnumsStringConverter.convert(filter)
-            return genre == filter || !MovieEnumsStringConverter.genreFilterStrings.contains(filter)
-        })
+    func selectFilter(filter: MovieFilter, animationDuration: TimeInterval) {
+        movieList.fadeOut(animationDuration, onCompletion: { [self] in
+            movieList.updateData(movies: moviesInSection.filter{movie in
+                let genre = MovieEnumsStringConverter.convert(movie.genre)
+                let filter = MovieEnumsStringConverter.convert(filter)
+                return genre == filter || !MovieEnumsStringConverter.genreFilterStrings.contains(filter)
+            })
+            movieList.fadeIn(animationDuration)
+        }, changeHidden: false)
+        if let parentSelectFilter = parentSelectFilter { parentSelectFilter(filter) }
     }
     
-    func updateData(dataSection: (MovieGroup, [MovieAppData.MovieModel])) {
+    func updateData(dataSection: (MovieGroup, [MovieAppData.MovieModel]), selectFilter: @escaping ((MovieFilter) -> Void), filter: MovieFilter? = nil) {
+        parentSelectFilter = selectFilter
         titleLabel.text = MovieEnumsStringConverter.convert(dataSection.0)
         moviesInSection = dataSection.1
         filtersStackView.setFilters(filters: dataSection.0.filters.filter{item in
@@ -85,6 +91,6 @@ class MovieSectionView : UIView, MovieFilterDelegate {
                 return genre == filter
             }
             return moviesInFilter.count > 0
-        })
+        }, currentFilter: filter)
     }
 }

@@ -86,4 +86,29 @@ extension UIView {
             layer.shouldRasterize = true
             layer.rasterizationScale = scale ? UIScreen.main.scale : 1
         }
+    
+    func fadeIn(_ duration: TimeInterval? = 0.2, onCompletion: (() -> Void)? = nil, changeHidden: Bool = true) {
+            self.alpha = 0
+            if changeHidden {
+                self.isHidden = false
+            }
+            UIView.animate(withDuration: duration!,
+                           animations: { self.alpha = 1 },
+                           completion: { (value: Bool) in
+                              if let complete = onCompletion { complete() }
+                           }
+            )
+        }
+
+    func fadeOut(_ duration: TimeInterval? = 0.2, onCompletion: (() -> Void)? = nil, changeHidden: Bool = true) {
+            UIView.animate(withDuration: duration!,
+                           animations: { self.alpha = 0 },
+                           completion: { (value: Bool) in
+                                if changeHidden {
+                                    self.isHidden = true
+                                }
+                               if let complete = onCompletion { complete() }
+                           }
+            )
+        }
 }
