@@ -10,11 +10,11 @@ import UIKit
 import SnapKit
 import MovieAppData
 
-class MovieSectionView : UIView, MovieFilterDelegate {
+class MovieSectionView: UIView, MovieFilterDelegate {
     var titleLabel: StyledUILabel!
     var filtersScrollView: UIScrollView!
     var filtersStackView: MovieSectionFilterView!
-    var movieList: MovieSectionListView!
+    var movieList: MovieSectionItemsCollectionView!
     var moviesInSection: [MovieAppData.MovieModel] = []
     var parentSelectFilter: ((MovieFilter) -> Void)? = nil
     
@@ -28,8 +28,8 @@ class MovieSectionView : UIView, MovieFilterDelegate {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func buildView() {
-        titleLabel = StyledUILabel(text:"-", bold: true, fontStyle: .title3, color: HexColorHelper.GetUIColor(hex: blueColorCode) ?? .red)
-        movieList = MovieSectionListView()
+        titleLabel = StyledUILabel(text:"-", bold: true, fontStyle: .title3, color: .themeBlue)
+        movieList = MovieSectionItemsCollectionView()
         filtersScrollView = UIScrollView()
         filtersScrollView.showsHorizontalScrollIndicator = false
         
@@ -46,48 +46,49 @@ class MovieSectionView : UIView, MovieFilterDelegate {
     func setViewLayout() {
         titleLabel.snp.makeConstraints{ make in
             make.top.equalToSuperview()
-            make.left.right.equalToSuperview().inset(marginSmall)
+            make.left.right.equalToSuperview().inset(CGFloat.defaultMargin)
         }
         filtersStackView.snp.makeConstraints{ make in
             make.left.right.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(marginSmall)
+            make.top.equalTo(titleLabel.snp.bottom).offset(CGFloat.defaultMargin)
             make.bottom.equalToSuperview()
         }
         filtersScrollView.snp.makeConstraints{ make in
-            make.left.right.equalToSuperview().inset(marginSmall)
-            make.top.equalTo(titleLabel.snp.bottom).offset(marginSmall)
+            make.left.right.equalToSuperview().inset(CGFloat.defaultMargin)
+            make.top.equalTo(titleLabel.snp.bottom).offset(CGFloat.defaultMargin)
             make.height.equalTo(filtersStackView)
         }
         movieList.snp.makeConstraints{ make in
-            make.top.equalTo(filtersScrollView.snp.bottom).offset(marginSmall)
+            make.top.equalTo(filtersScrollView.snp.bottom).offset(CGFloat.defaultMargin)
             make.left.right.bottom.equalToSuperview()
             make.height.equalTo(movieListItemSize)
         }
     }
     
     func selectFilter(filter: MovieFilter, animationDuration: TimeInterval) {
-        movieList.fadeOut(animationDuration, onCompletion: { [self] in
-            movieList.updateData(movies: moviesInSection.filter{movie in
-                let genre = MovieEnumsStringConverter.convert(movie.genre)
-                let filter = MovieEnumsStringConverter.convert(filter)
-                return genre == filter || !MovieEnumsStringConverter.genreFilterStrings.contains(filter)
+        movieList.fadeOut(animationDuration, onCompletion: { [weak self] in
+            guard let self = self else { return }
+            self.movieList.updateData(movies: self.moviesInSection.filter{movie in
+                let genre = movie.genre.stringValue
+                let filter = filter.stringValue
+                return genre == filter || !Genre.allStringValues.contains(filter)
             })
-            movieList.fadeIn(animationDuration)
+            self.movieList.fadeIn(animationDuration)
         }, changeHidden: false)
         if let parentSelectFilter = parentSelectFilter { parentSelectFilter(filter) }
     }
     
-    func updateData(dataSection: (MovieGroup, [MovieAppData.MovieModel]), selectFilter: @escaping ((MovieFilter) -> Void), filter: MovieFilter? = nil) {
+    func updateData(dataSection: GroupedMovieModel, selectFilter: @escaping ((MovieFilter) -> Void), filter: MovieFilter? = nil) {
         parentSelectFilter = selectFilter
-        titleLabel.text = MovieEnumsStringConverter.convert(dataSection.0)
-        moviesInSection = dataSection.1
-        filtersStackView.setFilters(filters: dataSection.0.filters.filter{item in
-            let filter = MovieEnumsStringConverter.convert(item)
-            if !MovieEnumsStringConverter.genreFilterStrings.contains(filter) {
+        titleLabel.text = dataSection.group.stringValue
+        moviesInSection = dataSection.movies
+        filtersStackView.setFilters(filters: dataSection.group.filters.filter{item in
+            let filter = item.stringValue
+            if !Genre.allStringValues.contains(filter) {
                 return true
             }
             let moviesInFilter = moviesInSection.filter{movie in
-                let genre = MovieEnumsStringConverter.convert(movie.genre)
+                let genre = movie.genre.stringValue
                 return genre == filter
             }
             return moviesInFilter.count > 0

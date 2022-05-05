@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-class MovieDetailsOverviewPeopleView : UIStackView {
-    var mySpacing: CGFloat = 5
+class MovieDetailsOverviewPeopleView: UIStackView {
+    var baseSpacing: CGFloat = 5
     var people: [MoviePersonModel] = []
     
     convenience init() {
@@ -18,7 +18,7 @@ class MovieDetailsOverviewPeopleView : UIStackView {
         axis = .vertical
         alignment = .fill
         distribution = .fillEqually
-        spacing = mySpacing
+        spacing = baseSpacing
     }
     
     func updateData(newPeople: [MoviePersonModel]) {
@@ -32,7 +32,7 @@ class MovieDetailsOverviewPeopleView : UIStackView {
             horizontalSv.axis = .horizontal
             horizontalSv.alignment = .fill
             horizontalSv.distribution = .fillEqually
-            horizontalSv.spacing = mySpacing
+            horizontalSv.spacing = baseSpacing
 
             for col in 0 ..< 3 {
                 if (row * 3 + col + 1) > people.count {
@@ -41,10 +41,10 @@ class MovieDetailsOverviewPeopleView : UIStackView {
                 let label = StyledUILabel()
                 
                 let boldText = people[row * 3 + col].name
-                let boldAttrs = [NSAttributedString.Key.font : StyledUILabel.getStyledFont(bold: true)]
+                let boldAttrs = [NSAttributedString.Key.font: StyledUILabel.getStyledFont(bold: true)]
                 let attributedString = NSMutableAttributedString(string:boldText, attributes:boldAttrs)
                 let normalText = "\n" + people[row * 3 + col].role
-                let normalAttrs = [NSAttributedString.Key.font : StyledUILabel.getStyledFont()]
+                let normalAttrs = [NSAttributedString.Key.font: StyledUILabel.getStyledFont()]
                 let normalString = NSMutableAttributedString(string:normalText, attributes: normalAttrs)
                 attributedString.append(normalString)
                 label.numberOfLines = 3

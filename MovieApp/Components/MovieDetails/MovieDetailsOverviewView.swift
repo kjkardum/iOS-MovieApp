@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MovieDetailsOverviewView : UIView {
+class MovieDetailsOverviewView: UIView {
     var overviewTitleLabel: StyledUILabel!
     var overviewLabel: StyledUILabel!
     var peopleList: MovieDetailsOverviewPeopleView!
@@ -37,17 +37,17 @@ class MovieDetailsOverviewView : UIView {
     
     func setViewLayout() {
         overviewTitleLabel.snp.makeConstraints{ make in
-            make.top.left.equalToSuperview().offset(marginDefault)
-            make.left.equalToSuperview().offset(marginSmall)
+            make.top.left.equalToSuperview().offset(CGFloat.margin(withMultiplier: 3))
+            make.left.equalToSuperview().offset(CGFloat.defaultMargin)
         }
         overviewLabel.snp.makeConstraints{ make in
-            make.top.equalTo(overviewTitleLabel.snp.bottom).offset(marginDefault)
-            make.left.right.equalToSuperview().inset(marginSmall)
+            make.top.equalTo(overviewTitleLabel.snp.bottom).offset(CGFloat.margin(withMultiplier: 3))
+            make.left.right.equalToSuperview().inset(CGFloat.defaultMargin)
         }
         peopleList.snp.makeConstraints{ make in
-            make.top.equalTo(overviewLabel.snp.bottom).offset(marginDefault)
-            make.left.right.equalToSuperview().inset(marginSmall)
-            make.bottom.equalToSuperview().inset(marginDefault * 3)
+            make.top.equalTo(overviewLabel.snp.bottom).offset(CGFloat.margin(withMultiplier: 3))
+            make.left.right.equalToSuperview().inset(CGFloat.defaultMargin)
+            make.bottom.equalToSuperview().inset(CGFloat.margin(withMultiplier: 3) * 3)
         }
     }
     

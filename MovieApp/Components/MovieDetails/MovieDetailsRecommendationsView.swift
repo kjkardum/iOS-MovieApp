@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MovieDetailsRecommendationsView : UIView {
+class MovieDetailsRecommendationsView: UIView {
     init() {
         super.init(frame: CGRect())
         

@@ -13,13 +13,11 @@ extension UIFont {
         let descriptor = fontDescriptor.withSymbolicTraits(traits)
         return UIFont(descriptor: descriptor!, size: 0) //0 = keep the size
     }
-
-    func bold() -> UIFont {
-        return withTraits(traits: .traitBold)
+    var bold: UIFont {
+        withTraits(traits: .traitBold)
     }
-
-    func italic() -> UIFont {
-        return withTraits(traits: .traitItalic)
+    var italic: UIFont {
+        withTraits(traits: .traitItalic)
     }
     static func custom(name: String, style: UIFont.TextStyle) -> UIFont? {
         let size: CGFloat = {

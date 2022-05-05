@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import MovieAppData
 
-class MovieSearchResults : UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class MovieSearchResults: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieResultsCollection: UICollectionView!
     var results: [MovieAppData.MovieModel] = []
     
@@ -33,7 +33,7 @@ class MovieSearchResults : UIView, UICollectionViewDataSource, UICollectionViewD
         movieResultsCollection.delegate = self
         movieResultsCollection.register(MovieSearchResultCell.self, forCellWithReuseIdentifier: MovieSearchResultCell.id)
         movieResultsCollection.isScrollEnabled = true
-        movieResultsCollection.contentInset = UIEdgeInsets(top: CGFloat(Float(marginSmall)), left: 0, bottom: CGFloat(Float(marginSmall)), right: 0)
+        movieResultsCollection.contentInset = UIEdgeInsets(top: CGFloat.defaultMargin, left: 0, bottom: CGFloat.defaultMargin, right: 0)
         movieResultsCollection.showsVerticalScrollIndicator = false
         movieResultsCollection.layer.masksToBounds = false
         movieResultsCollection.backgroundColor = .white
@@ -46,7 +46,7 @@ class MovieSearchResults : UIView, UICollectionViewDataSource, UICollectionViewD
     
     func setViewLayout() {
         movieResultsCollection.snp.makeConstraints{ make in
-            make.edges.equalToSuperview().inset(marginSmall)
+            make.edges.equalToSuperview().inset(CGFloat.defaultMargin)
         }
     }
     
@@ -70,68 +70,5 @@ class MovieSearchResults : UIView, UICollectionViewDataSource, UICollectionViewD
     func updateData(movies: [MovieAppData.MovieModel]) {
         results = movies
         movieResultsCollection.reloadData()
-    }
-}
-
-class MovieSearchResultCell : UICollectionViewCell {
-    static var id = "MovieSearchResultCell"
-    weak var image: UIImageView!
-    weak var title: StyledUILabel!
-    weak var shortDescription: StyledUILabel!
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        buildViews()
-        setViewLayout()
-    }
-    
-    required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    
-    func buildViews() {
-        self.contentView.layer.cornerRadius = 15
-        self.contentView.layer.masksToBounds = true
-        self.contentView.backgroundColor = .white
-        self.dropShadow(scale: false)
-        
-        let image = UIImageView()
-        self.contentView.addSubview(image)
-        self.image = image
-        
-        let title = StyledUILabel(bold: true, fontStyle: .callout)
-        self.contentView.addSubview(title)
-        self.title = title
-        
-        let description = StyledUILabel(fontStyle: .footnote, color: .gray)
-        self.contentView.addSubview(description)
-        self.shortDescription = description
-    }
-    
-    func setViewLayout() {
-        image.snp.makeConstraints{ make in
-            make.left.top.bottom.equalToSuperview()
-            make.height.equalTo(movieListItemSize)
-            make.width.equalTo(image.snp.height).dividedBy(1.4)
-        }
-        title.snp.makeConstraints{ make in
-            make.top.equalToSuperview().inset(marginMedium)
-            make.left.equalTo(image.snp.right).offset(marginMedium)
-        }
-        shortDescription.snp.makeConstraints{ make in
-            make.top.equalTo(title.snp.bottom).offset(marginMedium)
-            make.left.equalTo(image.snp.right).offset(marginMedium)
-            make.right.equalToSuperview().inset(marginMedium)
-            make.bottom.lessThanOrEqualToSuperview()
-        }
-    }
-    
-    func updateData(imageUrl: String, title: String, shortDescription: String) {
-        self.image.load(url: URL(string: imageUrl)!)
-        self.title.text = title
-        self.shortDescription.text = shortDescription
-    }
-    
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        return layoutAttributes
     }
 }

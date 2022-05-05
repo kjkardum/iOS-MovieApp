@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MovieDetailsSocialView : UIView {
+class MovieDetailsSocialView: UIView {
     init() {
         super.init(frame: CGRect())
         

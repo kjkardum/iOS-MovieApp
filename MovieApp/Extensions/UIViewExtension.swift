@@ -45,13 +45,17 @@ extension UIView {
         }
     }
 
-    func addBorder(toEdge edge: UIRectEdge, withColor color: UIColor = .black, inset: CGFloat = 0.0, thickness: CGFloat = 1.0) {
-        // Remove existing borders from view and readd them
+    func removeBorders() {
         for view in subviews {
             if view is BorderView {
                 view.removeFromSuperview()
             }
         }
+    }
+    
+    func addBorder(toEdge edge: UIRectEdge, withColor color: UIColor = .black, inset: CGFloat = 0.0, thickness: CGFloat = 1.0) {
+        // Remove existing borders from view and readd them
+        removeBorders()
 
         if edge.contains(.all) {
             addSidedBorder(toEdge: .top, withColor: color, inset: inset, thickness: thickness)

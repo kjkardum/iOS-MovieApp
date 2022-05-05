@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MovieDetailsCastView : UIView {
+class MovieDetailsCastView: UIView {
     init() {
         super.init(frame: CGRect())
         
