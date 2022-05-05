@@ -1,15 +1,19 @@
 //
-//  HexColorHelper.swift
+//  UIColorExtension.swift
 //  MovieApp
 //
-//  Created by Karlo Josip Kardum on 16.04.2022..
+//  Created by Karlo Josip Kardum on 30.04.2022..
 //
 
 import Foundation
 import UIKit
 
-class HexColorHelper {
-    static func GetUIColor(hex: String) -> UIColor? {
+extension UIColor {
+    static let themeLightGray = UIColor.init(hex: lightGrayColorCode) ?? .red
+    static let themeBlue = UIColor.init(hex: blueColorCode) ?? .red
+    static let themeBlueTransparrent = UIColor.init(hex: blueTransparent) ?? .red
+    
+    convenience init?(hex: String) {
         let r, g, b, a: CGFloat
         if hex.hasPrefix("#") {
             let start = hex.index(hex.startIndex, offsetBy: 1)
@@ -23,11 +27,11 @@ class HexColorHelper {
                     b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
                     a = CGFloat(hexNumber & 0x000000ff) / 255
 
-                    return UIColor(red: r, green: g, blue: b, alpha: a)
+                    self.init(red: r, green: g, blue: b, alpha: a)
+                    return
                 }
             }
         }
-
         return nil
     }
 }

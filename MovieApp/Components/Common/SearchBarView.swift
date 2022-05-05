@@ -9,13 +9,13 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SearchBarView : UIView, UITextFieldDelegate {
+class SearchBarView: UIView, UITextFieldDelegate {
     var searchIcon: UIImageView!
     var searchBox: UITextField!
     var clearButton: UIButton!
     var cancelButton: UIButton!
     
-    var delegate: SearchBoxDelegate?
+    weak var delegate: SearchBoxDelegate?
     
     init() {
         super.init(frame: CGRect())
@@ -32,7 +32,7 @@ class SearchBarView : UIView, UITextFieldDelegate {
             string: "Search",
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]
         )
-        searchBox.backgroundColor = HexColorHelper.GetUIColor(hex: lightGrayColorCode)
+        searchBox.backgroundColor = .themeLightGray
         searchBox.layer.cornerRadius = 10
         searchBox.delegate = self
         searchBox.textColor = .darkGray
@@ -45,7 +45,13 @@ class SearchBarView : UIView, UITextFieldDelegate {
         searchBox.leftView = searchIconWrapper
         searchBox.leftViewMode = .always
         
-        clearButton = UIButton.createIconButton(icon: .xmark, backgroundColor: UIColor(white: 1, alpha: 0), color: .black, iconSize: 10, target: self, action: #selector(clearSearchBox))
+        clearButton = UIButton.createIconButton(
+            icon: .xmark,
+            backgroundColor: UIColor(white: 1, alpha: 0),
+            color: .black,
+            iconSize: 10,
+            target: self,
+            action: #selector(clearSearchBox))
         let clearButtonWrapper = UIView()
         clearButtonWrapper.addSubview(clearButton)
         
@@ -86,9 +92,10 @@ class SearchBarView : UIView, UITextFieldDelegate {
     func changeCancelButtonVisibility(visible: Bool) {
         let animationSpeed = 0.2
         if visible {
-            UIView.animate(withDuration: animationSpeed) { [self] in
-                searchBox.snp.updateConstraints{ make in
-                    make.right.equalToSuperview().inset(cancelButton.frame.width + 20)
+            UIView.animate(withDuration: animationSpeed) { [weak self] in
+                guard let self = self else { return }
+                self.searchBox.snp.updateConstraints{ make in
+                    make.right.equalToSuperview().inset(self.cancelButton.frame.width + 20)
                 }
                 self.layoutIfNeeded()
             }
@@ -96,8 +103,9 @@ class SearchBarView : UIView, UITextFieldDelegate {
             
         } else {
             cancelButton.fadeOut(animationSpeed)
-            UIView.animate(withDuration: animationSpeed) { [self] in
-                searchBox.snp.updateConstraints{ make in
+            UIView.animate(withDuration: animationSpeed) { [weak self] in
+                guard let self = self else { return }
+                self.searchBox.snp.updateConstraints{ make in
                     make.right.equalToSuperview().inset(0)
                 }
                 self.layoutIfNeeded()
@@ -107,6 +115,7 @@ class SearchBarView : UIView, UITextFieldDelegate {
     
     @objc func clearSearchBox() {
         searchBox.text = ""
+        searchBoxDidChange(searchBox: searchBox)
     }
     
     @objc func cancelSearchBox() {

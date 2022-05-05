@@ -6,8 +6,8 @@
 //
 
 import Foundation
-protocol SearchBoxDelegate {
-    func onSearchBoxFocus() -> Void
-    func onSearchBoxUnfocus() -> Void
-    func onSearchBoxChange(input: String) -> Void
+protocol SearchBoxDelegate: AnyObject {
+    func onSearchBoxFocus()
+    func onSearchBoxUnfocus()
+    func onSearchBoxChange(input: String)
 }

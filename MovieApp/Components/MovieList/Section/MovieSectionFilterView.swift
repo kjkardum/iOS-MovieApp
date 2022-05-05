@@ -10,11 +10,11 @@ import UIKit
 import SnapKit
 import MovieAppData
 
-class MovieSectionFilterView : UIStackView {
+class MovieSectionFilterView: UIStackView {
     var mySpacing: CGFloat = 22
     var filters: [MovieFilter] = []
     var selectedFilter: FilterButton?
-    var delegate: MovieFilterDelegate?
+    weak var delegate: MovieFilterDelegate?
     
     convenience init() {
         self.init(frame: CGRect())
@@ -50,10 +50,10 @@ class MovieSectionFilterView : UIStackView {
     @objc func selectFilter(button: FilterButton, onLoad: Bool = false) {
         if let selectedFilter = selectedFilter {
             selectedFilter.titleLabel?.font = StyledUILabel.getStyledFont(fontStyle: .callout, bold: false)
-            selectedFilter.addBorder(toEdge: [])
+            selectedFilter.removeBorders()
         }
         button.titleLabel?.font = StyledUILabel.getStyledFont(fontStyle: .callout, bold: true)
-        button.addBorder(toEdge: .bottom, withColor: HexColorHelper.GetUIColor(hex: blueColorCode) ?? .black, thickness: 3.0)
+        button.addBorder(toEdge: .bottom, withColor: .themeBlue, thickness: 3.0)
         selectedFilter = button
         
         if onLoad {

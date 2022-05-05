@@ -8,6 +8,6 @@
 import Foundation
 import MovieAppData
 
-protocol MovieFilterDelegate {
-    func selectFilter(filter: MovieFilter, animationDuration: TimeInterval) -> Void
+protocol MovieFilterDelegate: AnyObject {
+    func selectFilter(filter: MovieFilter, animationDuration: TimeInterval)
 }

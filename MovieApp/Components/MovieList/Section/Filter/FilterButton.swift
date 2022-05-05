@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import MovieAppData
 
-class FilterButton : UIButton {
+class FilterButton: UIButton {
     var filterValue: MovieFilter
     
     required init(value: MovieFilter) {
@@ -18,7 +18,7 @@ class FilterButton : UIButton {
 
         super.init(frame: .zero)
         
-        setTitle(MovieEnumsStringConverter.convert(value), for: .normal)
+        setTitle(value.stringValue, for: .normal)
     }
 
     required init?(coder aDecoder: NSCoder) {

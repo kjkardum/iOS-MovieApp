@@ -10,10 +10,10 @@ import UIKit
 import SnapKit
 import MovieAppData
 
-class MovieListSectionsListView : UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class MovieAllSectionsCollectionView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieSectionsCollection: UICollectionView!
-    var sectionsData: [(MovieGroup,[MovieAppData.MovieModel])] = []
-    var selectedFilters: [MovieGroup : MovieFilter] = [:]
+    var sectionsData: [GroupedMovieModel] = []
+    var selectedFilters: [MovieGroup: MovieFilter] = [:]
     
     init() {
         super.init(frame: CGRect())
@@ -34,7 +34,7 @@ class MovieListSectionsListView : UIView, UICollectionViewDataSource, UICollecti
         movieSectionsCollection.delegate = self
         movieSectionsCollection.register(MovieListSectionCell.self, forCellWithReuseIdentifier: MovieListSectionCell.id)
         movieSectionsCollection.isScrollEnabled = true
-        movieSectionsCollection.contentInset = UIEdgeInsets(top: CGFloat(Float(marginSmall)), left: 0, bottom: CGFloat(Float(marginSmall)), right: 0)
+        movieSectionsCollection.contentInset = UIEdgeInsets(top: CGFloat.defaultMargin, left: 0, bottom: CGFloat.defaultMargin, right: 0)
         movieSectionsCollection.showsVerticalScrollIndicator = false
         movieSectionsCollection.backgroundColor = .white
         
@@ -48,8 +48,8 @@ class MovieListSectionsListView : UIView, UICollectionViewDataSource, UICollecti
         }
     }
     
-    func updateData(groups: [MovieGroup : [MovieAppData.MovieModel]]) {
-        sectionsData = groups.map { (key, value) in (key, value)}
+    func updateData(groups: [MovieGroup: [MovieAppData.MovieModel]]) {
+        sectionsData = groups.map { (key, value) in GroupedMovieModel(group: key, movies: value)}
         movieSectionsCollection.reloadData()
     }
     
@@ -62,45 +62,15 @@ class MovieListSectionsListView : UIView, UICollectionViewDataSource, UICollecti
         let data = self.sectionsData[indexPath.item]
         cell.updateData(
             dataSection: data,
-            selectFilter: { [self] filter in
-                selectedFilters[data.0] = filter
+            selectFilter: { [weak self] filter in
+                guard let self = self else { return }
+                self.selectedFilters[data.group] = filter
             },
-            filter: selectedFilters[data.0])
+            filter: selectedFilters[data.group])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 200)
-    }
-}
-
-
-class MovieListSectionCell : UICollectionViewCell {
-    static var id = "MovieListSectionCell"
-    weak var section: MovieSectionView!
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        let section = MovieSectionView()
-        self.contentView.addSubview(section)
-        self.section = section
-        
-        addSubview(section)
-        
-        section.snp.makeConstraints{ make in
-            make.edges.equalToSuperview()
-        }
-    }
-    
-    required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        return layoutAttributes
-    }
-    
-    func updateData(dataSection: (MovieGroup, [MovieAppData.MovieModel]), selectFilter: @escaping ((MovieFilter) -> Void), filter: MovieFilter? = nil) {
-        section.updateData(dataSection: dataSection, selectFilter: selectFilter, filter: filter)
     }
 }

@@ -11,11 +11,11 @@ import SnapKit
 
 typealias LikeButtonActionHandler = (Int)  -> Void
 
-class MovieDetailsCoverView : UIView {
+class MovieDetailsCoverView: UIView {
     var id: Int?
     
     var coverImage: UIImageView!
-    var starButton: UIButton!
+    var starButton: CircularToggleButton!
     var genreLabel: StyledUILabel!
     var movieLengthLabel: StyledUILabel!
     var movieReleaseLabel: StyledUILabel!
@@ -44,7 +44,7 @@ class MovieDetailsCoverView : UIView {
         coverImage.contentMode = .scaleAspectFill
         coverImage.clipsToBounds = true
         
-        starButton = UIButton.createIconButton(icon: .star, target: self, action: #selector(likeMovie))
+        starButton = CircularToggleButton(unselectedIcon: .star, selectedIcon: .starFill, action: likeMovie)
         genreLabel = StyledUILabel(color: .white)
         movieLengthLabel = StyledUILabel(bold: true, color: .white)
         movieReleaseLabel = StyledUILabel(color: .white)
@@ -69,32 +69,32 @@ class MovieDetailsCoverView : UIView {
         }
         starButton.snp.makeConstraints{ make in
             make.size.equalTo(CGSize(width: 40, height: 40))
-            make.left.equalTo(coverImage.snp.left).offset(marginDefault)
-            make.bottom.equalTo(coverImage.snp.bottom).offset(-marginDefault)
+            make.left.equalTo(coverImage.snp.left).offset(CGFloat.margin(withMultiplier: 3))
+            make.bottom.equalTo(coverImage.snp.bottom).offset(-CGFloat.margin(withMultiplier: 3))
         }
         genreLabel.snp.makeConstraints{ make in
-            make.bottom.equalTo(starButton.snp.top).offset(-marginDefault)
+            make.bottom.equalTo(starButton.snp.top).offset(-CGFloat.margin(withMultiplier: 3))
             make.left.equalTo(starButton)
         }
         movieLengthLabel.snp.makeConstraints{ make in
             make.bottom.equalTo(genreLabel)
-            make.left.equalTo(genreLabel.snp.right).offset(marginSmall)
+            make.left.equalTo(genreLabel.snp.right).offset(CGFloat.defaultMargin)
         }
         movieReleaseLabel.snp.makeConstraints{ make in
-            make.bottom.equalTo(genreLabel.snp.top).offset(-marginSmall)
+            make.bottom.equalTo(genreLabel.snp.top).offset(-CGFloat.defaultMargin)
             make.left.equalTo(genreLabel)
         }
         movieNameLabel.snp.makeConstraints{ make in
-            make.bottom.equalTo(movieReleaseLabel.snp.top).offset(-marginSmall)
+            make.bottom.equalTo(movieReleaseLabel.snp.top).offset(-CGFloat.defaultMargin)
             make.left.equalTo(movieReleaseLabel)
         }
         userScoreLabel.snp.makeConstraints{ make in
-            make.bottom.equalTo(movieNameLabel.snp.top).offset(-marginDefault)
+            make.bottom.equalTo(movieNameLabel.snp.top).offset(-CGFloat.margin(withMultiplier: 3))
             make.left.equalTo(movieNameLabel)
         }
         userScoreTitleLabel.snp.makeConstraints{ make in
             make.bottom.equalTo(userScoreLabel)
-            make.left.equalTo(userScoreLabel.snp.right).offset(marginSmall)
+            make.left.equalTo(userScoreLabel.snp.right).offset(CGFloat.defaultMargin)
         }
     }
     
@@ -114,9 +114,8 @@ class MovieDetailsCoverView : UIView {
         userScoreLabel.text = String(model.userScorePercentage) + "%"
     }
     
-    @objc func likeMovie() {
-        if let id = id {
-            likeMovieActionHandler(id)
-        }
+    @objc func likeMovie(liked: Bool) {
+        guard let id = id else { return }
+        likeMovieActionHandler(id)
     }
 }
