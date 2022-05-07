@@ -10,8 +10,12 @@ import UIKit
 
 protocol AppRouterProtocol {
     func setScreen(window: UIWindow?)
+    
     func popToRoot()
     func popBack()
+    
     func showTabController()
-    func showMovieDetailsController(movieId: UUID)
+    func showMovieDetailsController(movieId: Int)
+    
+    func getMoviesRepository() -> MoviesRepository
 }

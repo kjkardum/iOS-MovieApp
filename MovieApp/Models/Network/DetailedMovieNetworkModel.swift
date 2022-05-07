@@ -11,7 +11,7 @@ struct DetailedMovieNetworkModel: Codable {
     let id: Int
     let imdb_id: String
     let backdrop_path: String
-    let belongs_to_collection: Int? // NEKI TIP OVDJE
+    let belongs_to_collection: MovieCollectionNetworkModel?
     let budget: Double
     let genres: [SingleMovieGenreNetworkModel]
     let homepage: String

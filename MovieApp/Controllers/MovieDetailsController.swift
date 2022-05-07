@@ -11,6 +11,7 @@ import SnapKit
 
 class MovieDetailsController: UIViewController {
     var router: AppRouterProtocol!
+    let movieId: Int
     
     var scrollView: UIScrollView!
     var scrollContentView: UIView!
@@ -22,8 +23,9 @@ class MovieDetailsController: UIViewController {
     
     var movie: MovieModel?
     
-    init (router: AppRouterProtocol, movieId: UUID) {
+    init (router: AppRouterProtocol, movieId: Int) {
         self.router = router
+        self.movieId = movieId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -36,10 +38,7 @@ class MovieDetailsController: UIViewController {
         super.viewDidLoad()
         buildView()
         setViewLayout()
-        Task {
-            movie = await MovieModel.getPlaceholderMovie()
-            self.fillViewData()
-        }
+        fillViewData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -101,9 +100,22 @@ class MovieDetailsController: UIViewController {
     }
     
     func fillViewData() {
-        if let movie = movie {
-            coverView.updateData(model: movie)
-            overviewView.updateData(model: movie)
+        let moviesRepository = router.getMoviesRepository()
+        DispatchQueue.global(qos: .background).async {
+            moviesRepository.getMovieDetails(movieId: self.movieId, page: 1) { result in
+                DispatchQueue.main.async {
+                    switch (result) {
+                    case .failure(let value):
+                        print(value, self.movieId)
+                        self.router.popBack()
+                        return
+                    case .success(let value):
+                        self.coverView.updateData(model: value)
+                        self.overviewView.updateData(model: value)
+                        return
+                    }
+                }
+            }
         }
     }
 }

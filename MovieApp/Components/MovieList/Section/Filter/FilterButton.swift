@@ -10,15 +10,15 @@ import UIKit
 import MovieAppData
 
 class FilterButton: UIButton {
-    var filterValue: MovieFilter
+    var filterValue: Int
     
-    required init(value: MovieFilter) {
+    required init(group: GroupedMovieModel) {
         // set myValue before super.init is called
-        self.filterValue = value
+        self.filterValue = group.groupId
 
         super.init(frame: .zero)
         
-        setTitle(value.stringValue, for: .normal)
+        setTitle(group.groupName, for: .normal)
     }
 
     required init?(coder aDecoder: NSCoder) {

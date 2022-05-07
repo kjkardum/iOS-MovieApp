@@ -11,7 +11,7 @@ import UIKit
 class AppRouter: AppRouterProtocol {
     private let navigationController: UINavigationController!
     private let networkService: NetworkServiceProtocol!
-    let moviesRepository: MoviesRepository!
+    private let moviesRepository: MoviesRepository!
     
     init(navigationController: UINavigationController, networkService: NetworkServiceProtocol) {
         self.navigationController = navigationController
@@ -53,7 +53,11 @@ class AppRouter: AppRouterProtocol {
 
     }
     
-    func showMovieDetailsController(movieId: UUID) {
+    func showMovieDetailsController(movieId: Int) {
         navigationController.pushViewController(MovieDetailsController(router: self, movieId: movieId), animated: true)
+    }
+    
+    func getMoviesRepository() -> MoviesRepository {
+        return moviesRepository
     }
 }

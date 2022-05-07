@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import Network
 
 class MoviesRepository {
     static private let base_url = "https://api.themoviedb.org/3"
     static let base_image_url = "https://image.tmdb.org/t/p/w500"
-    let networkService: NetworkServiceProtocol
-    var apiKey: String = ""
+    private let networkService: NetworkServiceProtocol
+    private var apiKey: String = ""
     
     init (networkService: NetworkServiceProtocol) {
         self.networkService = networkService
@@ -19,8 +20,18 @@ class MoviesRepository {
     }
     
     func getMovieGenres(onResponse: @escaping (Result<MovieGenreNetworkModel, NetworkError>) -> Void) {
-        let params = ["api_key" : apiKey, "language" : "en-US"]
-        networkService.get(MoviesRepository.base_url + "/genre/movie/list", queryParams: params, onResponse: onResponse)
+        let monitor = NWPathMonitor()
+        let queue = DispatchQueue(label: "InternetConnectionMonitor")
+        monitor.pathUpdateHandler = { pathUpdateHandler in
+            if pathUpdateHandler.status == .satisfied {
+                let params = ["api_key" : self.apiKey, "language" : "en-US"]
+                self.networkService.get(MoviesRepository.base_url + "/genre/movie/list", queryParams: params, onResponse: onResponse)
+            } else {
+                onResponse(Result.failure(NetworkError.clientError))
+            }
+            monitor.cancel()
+        }
+        monitor.start(queue: queue)
     }
     
     func getPopularMovies(page: Int, onResponse: @escaping (Result<PaginatedNetworkModel<SimpleMovieNetworkModel>, NetworkError>) -> Void){

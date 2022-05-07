@@ -11,7 +11,7 @@ import MovieAppData
 
 class MovieSearchResultCell: UICollectionViewCell {
     static var id = "MovieSearchResultCell"
-    var movieId: UUID?
+    var movieId: Int?
     weak var image: UIImageView!
     weak var title: StyledUILabel!
     weak var shortDescription: StyledUILabel!
@@ -78,12 +78,12 @@ class MovieSearchResultCell: UICollectionViewCell {
         movieListController.router.showMovieDetailsController(movieId: movieId)
     }
     
-    func updateData(movie: MovieAppData.MovieModel){
-        if let url = URL(string: movie.imageUrl) {
+    func updateData(movie: SimpleMovieNetworkModel){
+        if let url = URL(string: MoviesRepository.base_image_url + movie.poster_path) {
             self.image.load(url: url)
         }
         self.title.text =  movie.title
-        self.shortDescription.text = movie.description
+        self.shortDescription.text = movie.overview
         self.movieId = movie.id
     }
     

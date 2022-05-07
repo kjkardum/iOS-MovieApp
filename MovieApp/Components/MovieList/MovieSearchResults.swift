@@ -12,7 +12,8 @@ import MovieAppData
 
 class MovieSearchResults: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieResultsCollection: UICollectionView!
-    var results: [MovieAppData.MovieModel] = []
+    var allResults: [SimpleMovieNetworkModel] = []
+    var results: [SimpleMovieNetworkModel] = []
     
     init() {
         super.init(frame: CGRect())
@@ -67,8 +68,14 @@ class MovieSearchResults: UIView, UICollectionViewDataSource, UICollectionViewDe
         return CGSize(width: collectionView.frame.size.width, height: 200)
     }
     
-    func updateData(movies: [MovieAppData.MovieModel]) {
-        results = movies
+    func updateData(movies: [SimpleMovieNetworkModel]) {
+        allResults = movies
+        results = allResults
+        movieResultsCollection.reloadData()
+    }
+    
+    func filterData(filter: String) {
+        results = allResults.filter{ movie in filter.isEmpty || movie.title.lowercased().contains(filter.lowercased())}
         movieResultsCollection.reloadData()
     }
 }

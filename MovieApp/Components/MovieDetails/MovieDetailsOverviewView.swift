@@ -37,7 +37,7 @@ class MovieDetailsOverviewView: UIView {
     
     func setViewLayout() {
         overviewTitleLabel.snp.makeConstraints{ make in
-            make.top.left.equalToSuperview().offset(CGFloat.margin(withMultiplier: 3))
+            make.top.equalToSuperview().offset(CGFloat.margin(withMultiplier: 3))
             make.left.equalToSuperview().offset(CGFloat.defaultMargin)
         }
         overviewLabel.snp.makeConstraints{ make in
@@ -51,10 +51,10 @@ class MovieDetailsOverviewView: UIView {
         }
     }
     
-    func updateData(model: MovieModel) {
-        overviewLabel.text = model.shortDescription
-        if let featuredPeople = model.featuredPeople {
-            peopleList.updateData(newPeople: featuredPeople)
-        }
+    func updateData(model: DetailedMovieNetworkModel) {
+        overviewLabel.text = model.overview
+        var featured: [MovieFeaturedEntityModel] = model.production_companies.map{ MovieFeaturedEntityModel(id: 0, name: $0.name, role: "Producer")}
+        featured.append(contentsOf: model.production_countries.map { MovieFeaturedEntityModel(id: 0, name: $0.name, role: "Country") })
+        peopleList.updateData(newFeatured: featured)
     }
 }

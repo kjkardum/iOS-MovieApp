@@ -11,7 +11,7 @@ import MovieAppData
 
 class MovieSectionCell: UICollectionViewCell {
     static var id = "MovieCell"
-    var movieId: UUID?
+    var movieId: Int?
     weak var image: UIImageView!
     weak var heartButton: CircularToggleButton!
     
@@ -58,8 +58,8 @@ class MovieSectionCell: UICollectionViewCell {
         }
     }
     
-    func updateData(movie: MovieAppData.MovieModel) {
-        if let url = URL(string: movie.imageUrl) {
+    func updateData(movie: SimpleMovieNetworkModel) {
+        if let url = URL(string: MoviesRepository.base_image_url + movie.poster_path) {
             image.load(url: url)
         }
         movieId = movie.id

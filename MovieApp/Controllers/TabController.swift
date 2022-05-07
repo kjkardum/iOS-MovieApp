@@ -34,6 +34,7 @@ class TabController: UITabBarController {
         UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .normal)
         tabBar.backgroundColor = .white
         tabBar.tintColor = .black
+        tabBar.unselectedItemTintColor = .gray
         tabBar.dropShadow()
         
         let movieListController = MovieListViewController(router: router)

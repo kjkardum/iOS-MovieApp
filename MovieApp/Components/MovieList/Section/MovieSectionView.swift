@@ -15,8 +15,8 @@ class MovieSectionView: UIView, MovieFilterDelegate {
     var filtersScrollView: UIScrollView!
     var filtersStackView: MovieSectionFilterView!
     var movieList: MovieSectionItemsCollectionView!
-    var moviesInSection: [MovieAppData.MovieModel] = []
-    var parentSelectFilter: ((MovieFilter) -> Void)? = nil
+    var moviesInSection: [GroupedMovieModel] = []
+    var parentSelectFilter: ((Int) -> Void)? = nil
     
     init() {
         super.init(frame: CGRect())
@@ -65,33 +65,22 @@ class MovieSectionView: UIView, MovieFilterDelegate {
         }
     }
     
-    func selectFilter(filter: MovieFilter, animationDuration: TimeInterval) {
+    func selectFilter(filter: Int, animationDuration: TimeInterval) {
         movieList.fadeOut(animationDuration, onCompletion: { [weak self] in
-            guard let self = self else { return }
-            self.movieList.updateData(movies: self.moviesInSection.filter{movie in
-                let genre = movie.genre.stringValue
-                let filter = filter.stringValue
-                return genre == filter || !Genre.allStringValues.contains(filter)
-            })
+            guard
+                let self = self,
+                let filteredMovies = self.moviesInSection.first(where: {group in group.groupId == filter})
+            else { return }
+            self.movieList.updateData(group: filteredMovies)
             self.movieList.fadeIn(animationDuration)
         }, changeHidden: false)
         if let parentSelectFilter = parentSelectFilter { parentSelectFilter(filter) }
     }
     
-    func updateData(dataSection: GroupedMovieModel, selectFilter: @escaping ((MovieFilter) -> Void), filter: MovieFilter? = nil) {
+    func updateData(category: MoviesCategoryModel, selectFilter: @escaping ((Int) -> Void), filter: Int? = nil) {
         parentSelectFilter = selectFilter
-        titleLabel.text = dataSection.group.stringValue
-        moviesInSection = dataSection.movies
-        filtersStackView.setFilters(filters: dataSection.group.filters.filter{item in
-            let filter = item.stringValue
-            if !Genre.allStringValues.contains(filter) {
-                return true
-            }
-            let moviesInFilter = moviesInSection.filter{movie in
-                let genre = movie.genre.stringValue
-                return genre == filter
-            }
-            return moviesInFilter.count > 0
-        }, currentFilter: filter)
+        titleLabel.text = category.categoryName
+        moviesInSection = category.categoryGroups
+        filtersStackView.setFilters(groups: category.categoryGroups, currentFilter: filter)
     }
 }

@@ -12,7 +12,7 @@ import MovieAppData
 
 class MovieSectionFilterView: UIStackView {
     var mySpacing: CGFloat = 22
-    var filters: [MovieFilter] = []
+    var groups: [GroupedMovieModel] = []
     var selectedFilter: FilterButton?
     weak var delegate: MovieFilterDelegate?
     
@@ -26,22 +26,22 @@ class MovieSectionFilterView: UIStackView {
         spacing = mySpacing
     }
     
-    func setFilters(filters: [MovieFilter], currentFilter: MovieFilter? = nil) {
-        self.filters = filters
+    func setFilters(groups: [GroupedMovieModel], currentFilter: Int? = nil) {
+        self.groups = groups
         fillGrid(currentFilter: currentFilter)
     }
     
-    func fillGrid(currentFilter: MovieFilter? = nil){
+    func fillGrid(currentFilter: Int? = nil){
         arrangedSubviews.forEach{ item in
             item.removeFromSuperview()
         }
-        for item in 0 ..< filters.count {
-            let button = FilterButton(value: filters[item])
+        for item in 0 ..< groups.count {
+            let button = FilterButton(group: groups[item])
             button.setTitleColor(.black, for: .normal)
             button.titleLabel?.font = StyledUILabel.getStyledFont(fontStyle: .callout, bold: false)
             button.addTarget(self, action: #selector(selectFilter), for: .touchUpInside)
             addArrangedSubview(button)
-            if item == 0 && currentFilter == nil || filters[item] == currentFilter {
+            if item == 0 && currentFilter == nil || groups[item].groupId == currentFilter {
                 selectFilter(button: button, onLoad: true)
             }
         }

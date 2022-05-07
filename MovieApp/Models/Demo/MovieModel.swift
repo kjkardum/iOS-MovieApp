@@ -18,7 +18,7 @@ struct MovieModel {
     let length: TimeInterval
     let userScorePercentage: Int
     
-    let featuredPeople: [MoviePersonModel]?
+    let featuredPeople: [MovieFeaturedEntityModel]?
     let cast: [MovieCastModel]?
     let reviews: [MovieReviewModel]?
     let recommendations: [MovieRecommendationModel]?
@@ -41,12 +41,12 @@ extension MovieModel {
             length: TimeInterval(hours: 2, minutes: 6),
             userScorePercentage: 76,
             featuredPeople: [
-                MoviePersonModel(id: 0, name: "Don Heck", role: "Characters"),
-                MoviePersonModel(id: 1, name: "Jack Kirby", role: "Characters"),
-                MoviePersonModel(id: 2, name: "Jon Favreau", role: "Director"),
-                MoviePersonModel(id: 3, name: "Don Heck", role: "Screenplay"),
-                MoviePersonModel(id: 4, name: "Jack Marcum", role: "Screenplay"),
-                MoviePersonModel(id: 5, name: "Matt Holloway", role: "Screenplay")
+                MovieFeaturedEntityModel(id: 0, name: "Don Heck", role: "Characters"),
+                MovieFeaturedEntityModel(id: 1, name: "Jack Kirby", role: "Characters"),
+                MovieFeaturedEntityModel(id: 2, name: "Jon Favreau", role: "Director"),
+                MovieFeaturedEntityModel(id: 3, name: "Don Heck", role: "Screenplay"),
+                MovieFeaturedEntityModel(id: 4, name: "Jack Marcum", role: "Screenplay"),
+                MovieFeaturedEntityModel(id: 5, name: "Matt Holloway", role: "Screenplay")
             ],
             cast: nil,
             reviews: nil,
