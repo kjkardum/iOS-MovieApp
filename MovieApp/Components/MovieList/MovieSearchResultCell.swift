@@ -11,6 +11,7 @@ import MovieAppData
 
 class MovieSearchResultCell: UICollectionViewCell {
     static var id = "MovieSearchResultCell"
+    var movieId: Int?
     weak var image: UIImageView!
     weak var title: StyledUILabel!
     weak var shortDescription: StyledUILabel!
@@ -40,6 +41,11 @@ class MovieSearchResultCell: UICollectionViewCell {
         let description = StyledUILabel(fontStyle: .footnote, color: .gray)
         self.contentView.addSubview(description)
         self.shortDescription = description
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(clickMovie))
+        contentView.isUserInteractionEnabled = true
+        contentView.addGestureRecognizer(tapGestureRecognizer)
+
     }
     
     func setViewLayout() {
@@ -60,12 +66,25 @@ class MovieSearchResultCell: UICollectionViewCell {
         }
     }
     
-    func updateData(imageUrl: String, title: String, shortDescription: String) {
-        if let url = URL(string: imageUrl) {
+    @objc func clickMovie() {
+        guard
+            let movieId = movieId,
+            let controller = findViewController(),
+            let movieListController = controller as? MovieListViewController
+        else {
+            print("Failed click on movie in search")
+            return
+        }
+        movieListController.router.showMovieDetailsController(movieId: movieId)
+    }
+    
+    func updateData(movie: SimpleMovieNetworkModel){
+        if let url = URL(string: MoviesRepository.base_image_url + movie.poster_path) {
             self.image.load(url: url)
         }
-        self.title.text = title
-        self.shortDescription.text = shortDescription
+        self.title.text =  movie.title
+        self.shortDescription.text = movie.overview
+        self.movieId = movie.id
     }
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

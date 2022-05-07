@@ -12,7 +12,7 @@ import MovieAppData
 
 class MovieSectionItemsCollectionView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieListCollection: UICollectionView!
-    var availableMovies: [MovieAppData.MovieModel] = []
+    var availableMovies: [SimpleMovieNetworkModel] = []
     
     init() {
         super.init(frame: CGRect())
@@ -63,8 +63,8 @@ class MovieSectionItemsCollectionView: UIView, UICollectionViewDataSource, UICol
         return CGSize(width: collectionView.frame.size.height/imageRatioConstant, height: collectionView.frame.size.height)
     }
     
-    func updateData(movies: [MovieAppData.MovieModel]) {
-        availableMovies = movies
+    func updateData(group: GroupedMovieModel) {
+        availableMovies = group.movies
         movieListCollection.reloadData()
     }
     

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MoviePersonModel {
+struct MovieFeaturedEntityModel {
     let id: Int
     let name: String
     let role: String

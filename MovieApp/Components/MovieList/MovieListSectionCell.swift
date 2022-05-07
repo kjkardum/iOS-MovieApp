@@ -34,7 +34,7 @@ class MovieListSectionCell: UICollectionViewCell {
         return layoutAttributes
     }
     
-    func updateData(dataSection: GroupedMovieModel, selectFilter: @escaping ((MovieFilter) -> Void), filter: MovieFilter? = nil) {
-        section.updateData(dataSection: dataSection, selectFilter: selectFilter, filter: filter)
+    func updateData(category: MoviesCategoryModel, selectFilter: @escaping ((Int) -> Void), filter: Int? = nil) {
+        section.updateData(category: category, selectFilter: selectFilter, filter: filter)
     }
 }

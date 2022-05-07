@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import MovieAppData
 
 struct GroupedMovieModel {
-    let group: MovieGroup
-    let movies: [MovieAppData.MovieModel]
+    let groupId: Int
+    let groupName: String
+    let movies: [SimpleMovieNetworkModel]
 }

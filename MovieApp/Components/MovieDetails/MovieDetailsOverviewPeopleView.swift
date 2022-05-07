@@ -10,7 +10,7 @@ import UIKit
 
 class MovieDetailsOverviewPeopleView: UIStackView {
     var baseSpacing: CGFloat = 5
-    var people: [MoviePersonModel] = []
+    var featured: [MovieFeaturedEntityModel] = []
     
     convenience init() {
         self.init(frame: CGRect())
@@ -21,13 +21,13 @@ class MovieDetailsOverviewPeopleView: UIStackView {
         spacing = baseSpacing
     }
     
-    func updateData(newPeople: [MoviePersonModel]) {
-        people = newPeople
+    func updateData(newFeatured: [MovieFeaturedEntityModel]) {
+        featured = newFeatured
         fillGrid()
     }
     
     func fillGrid(){
-        for row in 0 ..< Int(ceil(Double(people.count) / 3.0)) {
+        for row in 0 ..< Int(ceil(Double(featured.count) / 3.0)) {
             let horizontalSv = UIStackView()
             horizontalSv.axis = .horizontal
             horizontalSv.alignment = .fill
@@ -35,15 +35,15 @@ class MovieDetailsOverviewPeopleView: UIStackView {
             horizontalSv.spacing = baseSpacing
 
             for col in 0 ..< 3 {
-                if (row * 3 + col + 1) > people.count {
+                if (row * 3 + col + 1) > featured.count {
                     break
                 }
-                let label = StyledUILabel()
+                let label = StyledUILabel(color: .black)
                 
-                let boldText = people[row * 3 + col].name
+                let boldText = featured[row * 3 + col].name
                 let boldAttrs = [NSAttributedString.Key.font: StyledUILabel.getStyledFont(bold: true)]
                 let attributedString = NSMutableAttributedString(string:boldText, attributes:boldAttrs)
-                let normalText = "\n" + people[row * 3 + col].role
+                let normalText = "\n" + featured[row * 3 + col].role
                 let normalAttrs = [NSAttributedString.Key.font: StyledUILabel.getStyledFont()]
                 let normalString = NSMutableAttributedString(string:normalText, attributes: normalAttrs)
                 attributedString.append(normalString)

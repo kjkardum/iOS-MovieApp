@@ -12,14 +12,15 @@ import MovieAppData
 
 class MovieAllSectionsCollectionView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieSectionsCollection: UICollectionView!
-    var sectionsData: [GroupedMovieModel] = []
-    var selectedFilters: [MovieGroup: MovieFilter] = [:]
+    var sectionsData: [MoviesCategoryModel] = []
+    var selectedFilters: [String: Int] = [:]
     
     init() {
         super.init(frame: CGRect())
         
         buildView()
         setViewLayout()
+        
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -48,8 +49,8 @@ class MovieAllSectionsCollectionView: UIView, UICollectionViewDataSource, UIColl
         }
     }
     
-    func updateData(groups: [MovieGroup: [MovieAppData.MovieModel]]) {
-        sectionsData = groups.map { (key, value) in GroupedMovieModel(group: key, movies: value)}
+    func updateData(categories: [MoviesCategoryModel]) {
+        sectionsData = categories
         movieSectionsCollection.reloadData()
     }
     
@@ -61,12 +62,12 @@ class MovieAllSectionsCollectionView: UIView, UICollectionViewDataSource, UIColl
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListSectionCell.id, for: indexPath) as! MovieListSectionCell
         let data = self.sectionsData[indexPath.item]
         cell.updateData(
-            dataSection: data,
+            category: data,
             selectFilter: { [weak self] filter in
                 guard let self = self else { return }
-                self.selectedFilters[data.group] = filter
+                self.selectedFilters[data.categoryName] = filter
             },
-            filter: selectedFilters[data.group])
+            filter: selectedFilters[data.categoryName])
         return cell
     }
     

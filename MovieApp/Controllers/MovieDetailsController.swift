@@ -10,6 +10,9 @@ import UIKit
 import SnapKit
 
 class MovieDetailsController: UIViewController {
+    var router: AppRouterProtocol!
+    let movieId: Int
+    
     var scrollView: UIScrollView!
     var scrollContentView: UIView!
     var coverView: MovieDetailsCoverView!
@@ -20,6 +23,12 @@ class MovieDetailsController: UIViewController {
     
     var movie: MovieModel?
     
+    init (router: AppRouterProtocol, movieId: Int) {
+        self.router = router
+        self.movieId = movieId
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
         
@@ -29,16 +38,20 @@ class MovieDetailsController: UIViewController {
         super.viewDidLoad()
         buildView()
         setViewLayout()
-        Task {
-            movie = await MovieModel.getPlaceholderMovie()
-            self.fillViewData()
-        }
+        fillViewData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let titleImage =  UIImageView(image: UIImage(named: "HeaderLogo"))
+        navigationItem.titleView = titleImage
     }
     
     func buildView() {
-        navigationItem.title = "Movie Details"
+        view.backgroundColor = .themeBlue
         
         scrollView = UIScrollView()
+        scrollView.backgroundColor = .white
         view.addSubview(scrollView)
         scrollContentView = UIView()
         scrollView.addSubview(scrollContentView)
@@ -57,7 +70,8 @@ class MovieDetailsController: UIViewController {
     
     func setViewLayout() {
         scrollView.snp.makeConstraints{ make in
-            make.edges.equalTo(view)
+            make.bottom.left.right.equalTo(view)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         scrollContentView.snp.makeConstraints { make in
             make.top.bottom.equalTo(scrollView)
@@ -86,9 +100,22 @@ class MovieDetailsController: UIViewController {
     }
     
     func fillViewData() {
-        if let movie = movie {
-            coverView.updateData(model: movie)
-            overviewView.updateData(model: movie)
+        let moviesRepository = router.getMoviesRepository()
+        DispatchQueue.global(qos: .background).async {
+            moviesRepository.getMovieDetails(movieId: self.movieId, page: 1) { result in
+                DispatchQueue.main.async {
+                    switch (result) {
+                    case .failure(let value):
+                        print(value, self.movieId)
+                        self.router.popBack()
+                        return
+                    case .success(let value):
+                        self.coverView.updateData(model: value)
+                        self.overviewView.updateData(model: value)
+                        return
+                    }
+                }
+            }
         }
     }
 }

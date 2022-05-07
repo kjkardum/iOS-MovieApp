@@ -27,3 +27,4 @@ DerivedData
 *.ipa
 
 .idea/
+keys.plist

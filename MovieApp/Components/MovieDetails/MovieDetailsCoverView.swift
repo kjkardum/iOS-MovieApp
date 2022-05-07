@@ -99,19 +99,26 @@ class MovieDetailsCoverView: UIView {
     }
     
     
-    func updateData(model: MovieModel) {
+    func updateData(model: DetailedMovieNetworkModel) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         let dateYearOnlyFormatter = DateFormatter()
         dateYearOnlyFormatter.dateFormat = "yyyy"
         
+        let modelDateFormatter = DateFormatter()
+        modelDateFormatter.dateFormat = "yyyy-MM-dd"
+        let date = modelDateFormatter.date(from: model.release_date)!
+        
         id = model.id
-        coverImage.image = UIImage(named: model.imageUrl)
-        genreLabel.text = model.genres.joined(separator: ", ")
-        movieLengthLabel.text = model.length.asStringInterval()
-        movieReleaseLabel.text = dateFormatter.string(from: model.releaseDate)
-        movieNameLabel.text = model.name + "(" + dateYearOnlyFormatter.string(from: model.releaseDate) + ")"
-        userScoreLabel.text = String(model.userScorePercentage) + "%"
+        coverImage.image = UIImage()
+        if let url = URL(string: MoviesRepository.base_image_url + model.poster_path) {
+            coverImage.load(url: url)
+        }
+        genreLabel.text = model.genres.map{genre in genre.name}.joined(separator: ", ")
+        movieLengthLabel.text = (model.runtime * 60).asStringInterval()
+        movieReleaseLabel.text = dateFormatter.string(from: date)
+        movieNameLabel.text = model.title + "(" + dateYearOnlyFormatter.string(from: date) + ")"
+        userScoreLabel.text = String(Int(model.vote_average * 10)) + "%"
     }
     
     @objc func likeMovie(liked: Bool) {
