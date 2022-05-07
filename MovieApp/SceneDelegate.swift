@@ -22,8 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         navigationController.navigationBar.tintColor = .white
         navigationController.navigationBar.backgroundColor = .themeBlue
         navigationController.navigationBar.isTranslucent = true
-        
-        let router = AppRouter(navigationController: navigationController)
+        let networkService = NetworkService()
+        let router = AppRouter(navigationController: navigationController, networkService: networkService)
         router.setScreen(window: window)
     }
 

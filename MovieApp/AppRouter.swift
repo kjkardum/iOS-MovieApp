@@ -10,9 +10,13 @@ import UIKit
 
 class AppRouter: AppRouterProtocol {
     private let navigationController: UINavigationController!
+    private let networkService: NetworkServiceProtocol!
+    let moviesRepository: MoviesRepository!
     
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, networkService: NetworkServiceProtocol) {
         self.navigationController = navigationController
+        self.networkService = networkService
+        self.moviesRepository = MoviesRepository(networkService: networkService)
     }
     
     func setScreen(window: UIWindow?) {

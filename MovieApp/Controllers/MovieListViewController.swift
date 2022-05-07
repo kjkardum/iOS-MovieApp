@@ -67,8 +67,8 @@ class MovieListViewController: UIViewController, SearchBoxDelegate {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         searchBar.snp.makeConstraints{ make in
-            make.left.right.equalToSuperview().inset(CGFloat.defaultMargin)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(CGFloat.defaultMargin)
+            make.left.right.equalToSuperview().inset(CGFloat.margin(withMultiplier: 2))
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(CGFloat.margin(withMultiplier: 2))
         }
         sectionsList.snp.makeConstraints{ make in
             make.top.equalTo(searchBar.snp.bottom).offset(CGFloat.margin(withMultiplier: 3))
