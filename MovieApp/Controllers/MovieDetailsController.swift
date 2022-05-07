@@ -10,6 +10,8 @@ import UIKit
 import SnapKit
 
 class MovieDetailsController: UIViewController {
+    var router: AppRouterProtocol!
+    
     var scrollView: UIScrollView!
     var scrollContentView: UIView!
     var coverView: MovieDetailsCoverView!
@@ -19,6 +21,11 @@ class MovieDetailsController: UIViewController {
     var recommendationsView: MovieDetailsRecommendationsView!
     
     var movie: MovieModel?
+    
+    init (router: AppRouterProtocol, movieId: UUID) {
+        self.router = router
+        super.init(nibName: nil, bundle: nil)
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -35,10 +42,17 @@ class MovieDetailsController: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let titleImage =  UIImageView(image: UIImage(named: "HeaderLogo"))
+        navigationItem.titleView = titleImage
+    }
+    
     func buildView() {
-        navigationItem.title = "Movie Details"
+        view.backgroundColor = .themeBlue
         
         scrollView = UIScrollView()
+        scrollView.backgroundColor = .white
         view.addSubview(scrollView)
         scrollContentView = UIView()
         scrollView.addSubview(scrollContentView)
@@ -57,7 +71,8 @@ class MovieDetailsController: UIViewController {
     
     func setViewLayout() {
         scrollView.snp.makeConstraints{ make in
-            make.edges.equalTo(view)
+            make.bottom.left.right.equalTo(view)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         scrollContentView.snp.makeConstraints { make in
             make.top.bottom.equalTo(scrollView)

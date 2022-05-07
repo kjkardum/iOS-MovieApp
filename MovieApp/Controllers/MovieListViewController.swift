@@ -11,14 +11,23 @@ import SnapKit
 import MovieAppData
 
 class MovieListViewController: UIViewController, SearchBoxDelegate {
+    var router: AppRouterProtocol!
+    
+    var innerView: UIView!
     var searchBar: SearchBarView!
     var sectionsList: MovieAllSectionsCollectionView!
     var searchResultsList: MovieSearchResults!
     
-    init() {
+
+    init (router: AppRouterProtocol) {
+        self.router = router
         super.init(nibName: nil, bundle: nil)
     }
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,31 +42,43 @@ class MovieListViewController: UIViewController, SearchBoxDelegate {
     }
     
     func buildView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .themeBlue
         
+        let titleImage =  UIImageView(image: UIImage(named: "HeaderLogo"))
+        navigationController?.navigationBar.topItem?.titleView = titleImage
+        
+        innerView = UIView()
+        innerView.backgroundColor = .white
         searchBar = SearchBarView()
         sectionsList = MovieAllSectionsCollectionView()
         searchResultsList = MovieSearchResults()
         searchBar.delegate = self
         
-        view.addSubview(searchBar)
-        view.addSubview(sectionsList)
-        view.addSubview(searchResultsList)
+        innerView.addSubview(searchBar)
+        innerView.addSubview(sectionsList)
+        innerView.addSubview(searchResultsList)
+        view.addSubview(innerView)
         searchResultsList.isHidden = true
     }
     
     func setViewLayout() {
+        innerView.snp.makeConstraints{ make in
+            make.bottom.left.right.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+        }
         searchBar.snp.makeConstraints{ make in
             make.left.right.equalToSuperview().inset(CGFloat.defaultMargin)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(CGFloat.defaultMargin)
         }
         sectionsList.snp.makeConstraints{ make in
             make.top.equalTo(searchBar.snp.bottom).offset(CGFloat.margin(withMultiplier: 3))
-            make.left.right.bottom.equalToSuperview()
+            make.left.right.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         searchResultsList.snp.makeConstraints{ make in
             make.top.equalTo(searchBar.snp.bottom).offset(CGFloat.margin(withMultiplier: 3))
-            make.left.right.bottom.equalToSuperview()
+            make.left.right.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
     

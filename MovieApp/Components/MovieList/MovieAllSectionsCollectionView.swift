@@ -20,6 +20,7 @@ class MovieAllSectionsCollectionView: UIView, UICollectionViewDataSource, UIColl
         
         buildView()
         setViewLayout()
+        
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }

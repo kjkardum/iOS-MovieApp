@@ -58,7 +58,7 @@ class MovieSearchResults: UIView, UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieSearchResultCell.id, for: indexPath) as! MovieSearchResultCell
         let data = self.results[indexPath.item]
-        cell.updateData(imageUrl: data.imageUrl, title: data.title, shortDescription: data.description)
+        cell.updateData(movie: data)
         
         return cell
     }
