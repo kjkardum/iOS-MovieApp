@@ -67,6 +67,11 @@ class MoviesRepository {
         networkService.get(MoviesRepository.base_url + "/movie/" + String(movieId), queryParams: params, onResponse: onResponse)
     }
     
+    func searchMovies(query: String, page: Int, onResponse: @escaping (Result<PaginatedNetworkModel<SimpleMovieNetworkModel>, NetworkError>) -> Void) {
+        let params = ["api_key" : apiKey, "language" : "en-US", "page" : String(page), "query": query]
+        networkService.get(MoviesRepository.base_url + "/search/movie", queryParams: params, onResponse: onResponse)
+    }
+    
     private func loadApiKey() {
         var keys: NSDictionary?
         if let path = Bundle.main.path(forResource: "keys", ofType: "plist") {

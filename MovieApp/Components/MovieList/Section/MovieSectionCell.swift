@@ -59,7 +59,9 @@ class MovieSectionCell: UICollectionViewCell {
     }
     
     func updateData(movie: SimpleMovieNetworkModel) {
-        if let url = URL(string: MoviesRepository.base_image_url + movie.poster_path) {
+        var url = defaultPosterUrl;
+        if let path = movie.poster_path { url = MoviesRepository.base_image_url + path}
+        if let url = URL(string: url) {
             image.load(url: url)
         }
         movieId = movie.id
