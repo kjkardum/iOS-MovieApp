@@ -18,3 +18,5 @@ let themeFont = "Proxima Nova"
 let movieListItemSize = 170
 
 let imageRatioConstant = 1.46
+
+let defaultPosterUrl = "https://pbs.twimg.com/profile_images/1243623122089041920/gVZIvphd_400x400.jpg"

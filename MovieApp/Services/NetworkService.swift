@@ -57,6 +57,7 @@ class NetworkService: NetworkServiceProtocol {
             .map{ key, value in encodeParameter(key) + "=" + encodeParameter(value)}
             .joined(separator: "&")
         newUrl = newUrl + queryString
+        print(newUrl)
         return newUrl
     }
     
@@ -91,6 +92,12 @@ class NetworkService: NetworkServiceProtocol {
             }
             guard let value = try? JSONDecoder().decode(T.self, from: data) else {
                 onResponse(.failure(.jsonError(String(describing: T.self))))
+                do {
+                    let _ = try JSONDecoder().decode(T.self, from: data)
+                } catch {
+                    print(error)
+                }
+                
                 return
             }
             onResponse(.success(value))

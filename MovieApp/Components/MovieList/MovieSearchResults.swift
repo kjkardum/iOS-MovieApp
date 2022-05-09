@@ -14,6 +14,7 @@ class MovieSearchResults: UIView, UICollectionViewDataSource, UICollectionViewDe
     var movieResultsCollection: UICollectionView!
     var allResults: [SimpleMovieNetworkModel] = []
     var results: [SimpleMovieNetworkModel] = []
+    var currentFilter: String = ""
     
     init() {
         super.init(frame: CGRect())
@@ -75,7 +76,32 @@ class MovieSearchResults: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     func filterData(filter: String) {
-        results = allResults.filter{ movie in filter.isEmpty || movie.title.lowercased().contains(filter.lowercased())}
-        movieResultsCollection.reloadData()
+        guard
+            let anyController = findViewController(),
+            let controller = anyController as? MovieListViewController
+        else { return }
+        self.currentFilter = filter
+        if filter.isEmpty {
+            results = allResults
+            movieResultsCollection.reloadData()
+            return
+        }
+        DispatchQueue.global(qos: .background).async {
+            controller.moviesRepository.searchMovies(query: filter, page: 1) { result in
+                DispatchQueue.main.async {
+                    switch (result) {
+                    case .failure(let error):
+                        print(error)
+                        return
+                    case .success(let value):
+                        if self.currentFilter == filter {
+                            self.results = value.results
+                            self.movieResultsCollection.reloadData()
+                        }
+                        return
+                    }
+                }
+            }
+        }
     }
 }
