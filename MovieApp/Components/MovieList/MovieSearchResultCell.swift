@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import MovieAppData
 
 class MovieSearchResultCell: UICollectionViewCell {
     static var id = "MovieSearchResultCell"
@@ -78,15 +77,15 @@ class MovieSearchResultCell: UICollectionViewCell {
         movieListController.router.showMovieDetailsController(movieId: movieId)
     }
     
-    func updateData(movie: SimpleMovieNetworkModel){
-        var url = defaultPosterUrl;
-        if let path = movie.poster_path { url = MoviesRepository.base_image_url + path}
-        if let url = URL(string: url) {
-            self.image.load(url: url)
+    func updateData(movie: Movie){
+        if let data = movie.poster_path {
+            self.image.image = UIImage(data: data)
+        } else {
+            image.image = UIImage(named: "UnknownPoster")
         }
         self.title.text =  movie.title
         self.shortDescription.text = movie.overview
-        self.movieId = movie.id
+        self.movieId = Int(truncatingIfNeeded: movie.tmdbId)
     }
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

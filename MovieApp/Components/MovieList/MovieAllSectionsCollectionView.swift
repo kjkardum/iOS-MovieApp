@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import SnapKit
-import MovieAppData
 
 class MovieAllSectionsCollectionView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieSectionsCollection: UICollectionView!
@@ -51,7 +50,7 @@ class MovieAllSectionsCollectionView: UIView, UICollectionViewDataSource, UIColl
     
     func updateData(categories: [MoviesCategoryModel]) {
         sectionsData = categories
-        movieSectionsCollection.reloadData()
+        movieSectionsCollection.reloadItems(at: movieSectionsCollection.indexPathsForVisibleItems)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import MovieAppData
 
 protocol MovieFilterDelegate: AnyObject {
     func selectFilter(filter: Int, animationDuration: TimeInterval)

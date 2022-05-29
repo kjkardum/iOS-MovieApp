@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import MovieAppData
 
 class MovieListSectionCell: UICollectionViewCell {
     static var id = "MovieListSectionCell"

@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import SnapKit
-import MovieAppData
 
 class MovieSectionFilterView: UIStackView {
     var mySpacing: CGFloat = 22
