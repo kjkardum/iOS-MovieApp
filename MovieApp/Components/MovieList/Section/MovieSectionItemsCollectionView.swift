@@ -8,11 +8,10 @@
 import Foundation
 import UIKit
 import SnapKit
-import MovieAppData
 
 class MovieSectionItemsCollectionView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieListCollection: UICollectionView!
-    var availableMovies: [SimpleMovieNetworkModel] = []
+    var availableMovies: [Movie] = []
     
     init() {
         super.init(frame: CGRect())
@@ -65,7 +64,7 @@ class MovieSectionItemsCollectionView: UIView, UICollectionViewDataSource, UICol
     
     func updateData(group: GroupedMovieModel) {
         availableMovies = group.movies
-        movieListCollection.reloadData()
+        movieListCollection.reloadItems(at: movieListCollection.indexPathsForVisibleItems)
     }
     
 }

@@ -10,5 +10,5 @@ import Foundation
 struct GroupedMovieModel {
     let groupId: Int
     let groupName: String
-    let movies: [SimpleMovieNetworkModel]
+    let movies: [Movie]
 }

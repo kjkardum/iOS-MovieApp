@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import SnapKit
-import MovieAppData
 
 class MovieSectionView: UIView, MovieFilterDelegate {
     var titleLabel: StyledUILabel!

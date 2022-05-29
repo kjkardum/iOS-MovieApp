@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import MovieAppData
 
 class FilterButton: UIButton {
     var filterValue: Int

@@ -7,16 +7,20 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class AppRouter: AppRouterProtocol {
     private let navigationController: UINavigationController!
     private let networkService: NetworkServiceProtocol!
+    private let context: NSManagedObjectContext!
     private let moviesRepository: MoviesRepository!
     
     init(navigationController: UINavigationController, networkService: NetworkServiceProtocol) {
         self.navigationController = navigationController
         self.networkService = networkService
-        self.moviesRepository = MoviesRepository(networkService: networkService)
+        self.context = CoreDataStack().persistentContainer.viewContext
+        self.moviesRepository = MoviesRepository(networkService: networkService, context: context)
+        self.moviesRepository.seedData()
     }
     
     func setScreen(window: UIWindow?) {

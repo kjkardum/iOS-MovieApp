@@ -20,6 +20,7 @@ class MovieDetailsController: UIViewController {
     var castView: MovieDetailsCastView!
     var socialView: MovieDetailsSocialView!
     var recommendationsView: MovieDetailsRecommendationsView!
+    var moviesRepository: MoviesRepository!
     
     var movie: MovieModel?
     
@@ -36,6 +37,7 @@ class MovieDetailsController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        moviesRepository = router.getMoviesRepository()
         buildView()
         setViewLayout()
         fillViewData()
@@ -100,9 +102,8 @@ class MovieDetailsController: UIViewController {
     }
     
     func fillViewData() {
-        let moviesRepository = router.getMoviesRepository()
         DispatchQueue.global(qos: .background).async {
-            moviesRepository.getMovieDetails(movieId: self.movieId, page: 1) { result in
+            self.moviesRepository.getMovieDetails(movieId: self.movieId, page: 1) { result in
                 DispatchQueue.main.async {
                     switch (result) {
                     case .failure(let value):

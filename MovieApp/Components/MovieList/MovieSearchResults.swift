@@ -8,12 +8,11 @@
 import Foundation
 import UIKit
 import SnapKit
-import MovieAppData
 
 class MovieSearchResults: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var movieResultsCollection: UICollectionView!
-    var allResults: [SimpleMovieNetworkModel] = []
-    var results: [SimpleMovieNetworkModel] = []
+    var allResults: [Movie] = []
+    var results: [Movie] = []
     var currentFilter: String = ""
     
     init() {
@@ -69,10 +68,15 @@ class MovieSearchResults: UIView, UICollectionViewDataSource, UICollectionViewDe
         return CGSize(width: collectionView.frame.size.width, height: 200)
     }
     
-    func updateData(movies: [SimpleMovieNetworkModel]) {
+    func updateData(movies: [Movie]) {
         allResults = movies
         results = allResults
-        movieResultsCollection.reloadData()
+        self.reloadData()
+    }
+    
+    func reloadData(){
+        //movieResultsCollection.reloadData()
+        movieResultsCollection.reloadItems(at: movieResultsCollection.indexPathsForVisibleItems)
     }
     
     func filterData(filter: String) {
@@ -83,7 +87,7 @@ class MovieSearchResults: UIView, UICollectionViewDataSource, UICollectionViewDe
         self.currentFilter = filter
         if filter.isEmpty {
             results = allResults
-            movieResultsCollection.reloadData()
+            self.reloadData()
             return
         }
         DispatchQueue.global(qos: .background).async {
@@ -95,8 +99,8 @@ class MovieSearchResults: UIView, UICollectionViewDataSource, UICollectionViewDe
                         return
                     case .success(let value):
                         if self.currentFilter == filter {
-                            self.results = value.results
-                            self.movieResultsCollection.reloadData()
+                            self.results = value
+                            self.reloadData()
                         }
                         return
                     }

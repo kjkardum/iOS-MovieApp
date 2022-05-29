@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import SnapKit
-import MovieAppData
 
 class MovieListViewController: UIViewController, SearchBoxDelegate {
     var router: AppRouterProtocol!
@@ -20,13 +19,13 @@ class MovieListViewController: UIViewController, SearchBoxDelegate {
     
     var moviesRepository: MoviesRepository!
     var errorMessageShown = false
-    var movieGenres: [SingleMovieGenreNetworkModel]?
-    var popularMovies: [SimpleMovieNetworkModel]?
-    var trendingMoviesDay: [SimpleMovieNetworkModel]?
-    var trendingMoviesWeek: [SimpleMovieNetworkModel]?
-    var topRatedMovies: [SimpleMovieNetworkModel]?
-    var recommendedMovies: [SimpleMovieNetworkModel]?
-
+    var movieGenres: [Genre]?
+    var popularMovies: [Movie]?
+    var trendingMoviesDay: [Movie]?
+    var trendingMoviesWeek: [Movie]?
+    var topRatedMovies: [Movie]?
+    var recommendedMovies: [Movie]?
+    
     init (router: AppRouterProtocol) {
         self.router = router
         super.init(nibName: nil, bundle: nil)
@@ -90,13 +89,14 @@ class MovieListViewController: UIViewController, SearchBoxDelegate {
     func fillViewData() {
         if errorMessageShown { return }
         guard
-            let movieGenres = movieGenres,
-            let popularMovies = popularMovies,
-            let trendingMoviesDay = trendingMoviesDay,
-            let trendingMoviesWeek = trendingMoviesWeek,
-            let topRatedMovies = topRatedMovies,
-            let recommendedMovies = recommendedMovies
+            let movieGenres = movieGenres
         else { return }
+        
+        let popularMovies = popularMovies ?? []
+        let trendingMoviesDay = trendingMoviesDay ?? []
+        let trendingMoviesWeek = trendingMoviesWeek ?? []
+        let topRatedMovies = topRatedMovies ?? []
+        let recommendedMovies = recommendedMovies ?? []
         
         let categories: [MoviesCategoryModel] = [
             MoviesCategoryModel(categoryName: "Popular", categoryGroups: createMovieGroups(popularMovies)),
@@ -107,17 +107,16 @@ class MovieListViewController: UIViewController, SearchBoxDelegate {
             MoviesCategoryModel(categoryName: "Top Rated", categoryGroups: createMovieGroups(topRatedMovies)),
             MoviesCategoryModel(categoryName: "Recommended", categoryGroups: createMovieGroups(recommendedMovies))
         ]
-        
         searchResultsList.updateData(movies: popularMovies)
         sectionsList.updateData(categories: categories)
     }
     
-    func createMovieGroups(_ movies: [SimpleMovieNetworkModel]) -> [GroupedMovieModel] {
+    func createMovieGroups(_ movies: [Movie]) -> [GroupedMovieModel] {
         guard let movieGenres = movieGenres else { return [] }
         let groupedItems = movieGenres.map{ genre in GroupedMovieModel(
-            groupId: genre.id,
+            groupId: Int(truncatingIfNeeded: genre.id),
             groupName: genre.name,
-            movies: movies.filter{movie in movie.genre_ids.contains(genre.id)})}
+            movies: movies.filter{movie in movie.genres.contains(where: { $0.id == Int64(genre.id) })})}
         return groupedItems.filter{ group in group.movies.count > 0 }
     }
     
@@ -145,8 +144,8 @@ class MovieListViewController: UIViewController, SearchBoxDelegate {
         innerView.addSubview(errorImage)
         view.addSubview(innerView)
         innerView.snp.makeConstraints{ make in
-                make.bottom.left.right.equalToSuperview()
-                make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.bottom.left.right.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         errorImage.snp.makeConstraints{ make in make.center.equalToSuperview()}
     }
@@ -157,107 +156,99 @@ class MovieListViewController: UIViewController, SearchBoxDelegate {
         loadTrendingMoviesWeek()
     }
     func loadGenres() {
-        DispatchQueue.global(qos: .background).async {
-            self.moviesRepository.getMovieGenres{ result in
-                DispatchQueue.main.async {
-                    switch (result) {
-                    case .failure(_):
-                        self.showErrorMessage()
-                        return
-                    case .success(let value):
-                        self.movieGenres = value.genres
-                        self.loadPopularMovies()
-                        self.loadTopRatedMovies()
-                        self.loadRecommendedMovies()
+        self.moviesRepository.getMovieGenres{ result in
+            DispatchQueue.main.async {
+                switch (result) {
+                case .failure(_):
+                    self.showErrorMessage()
+                    return
+                case .success(let value):
+                    if (self.movieGenres != nil && self.movieGenres!.count > 0) {
                         return
                     }
+                    self.movieGenres = value
+                    self.loadPopularMovies()
+                    self.loadTopRatedMovies()
+                    self.loadRecommendedMovies()
+                    return
                 }
             }
         }
     }
+    
     func loadPopularMovies() {
-        DispatchQueue.global(qos: .background).async {
-            self.moviesRepository.getPopularMovies(page: 1) { result in
-                DispatchQueue.main.async {
-                    switch (result) {
-                    case .failure(_):
-                        self.showErrorMessage()
-                        return
-                    case .success(let value):
-                        self.popularMovies = value.results
-                        self.fillViewData()
-                        return
-                    }
+        self.moviesRepository.getPopularMovies(page: 1, genre: nil) { result in
+            DispatchQueue.main.async {
+                switch (result) {
+                case .failure(_):
+                    return
+                case .success(let value):
+                    self.popularMovies = value
+                    self.fillViewData()
+                    return
                 }
             }
         }
     }
+    
     func loadTrendingMoviesDay() {
-        DispatchQueue.global(qos: .background).async {
-            self.moviesRepository.getDayTrendingMovies(page: 1) { result in
-                DispatchQueue.main.async {
-                    switch (result) {
-                    case .failure(_):
-                        self.showErrorMessage()
-                        return
-                    case .success(let value):
-                        self.trendingMoviesDay = value.results
-                        self.fillViewData()
-                        return
-                    }
+        self.moviesRepository.getDayTrendingMovies(page: 1) { result in
+            DispatchQueue.main.async {
+                switch (result) {
+                case .failure(_):
+                    return
+                case .success(let value):
+                    self.trendingMoviesDay = value
+                    self.fillViewData()
+                    return
                 }
             }
         }
     }
+    
     func loadTrendingMoviesWeek() {
-        DispatchQueue.global(qos: .background).async {
-            self.moviesRepository.getWeekTrendingMovies(page: 1) { result in
-                DispatchQueue.main.async {
-                    switch (result) {
-                    case .failure(_):
-                        self.showErrorMessage()
-                        return
-                    case .success(let value):
-                        self.trendingMoviesWeek = value.results
-                        self.fillViewData()
-                        return
-                    }
+        self.moviesRepository.getWeekTrendingMovies(page: 1) { result in
+            DispatchQueue.main.async {
+                switch (result) {
+                case .failure(_):
+                    return
+                case .success(let value):
+                    self.trendingMoviesWeek = value
+                    self.fillViewData()
+                    return
                 }
             }
         }
     }
+    
     func loadTopRatedMovies() {
-        DispatchQueue.global(qos: .background).async {
-            self.moviesRepository.getTopRatedMovies(page: 1) { result in
-                DispatchQueue.main.async {
-                    switch (result) {
-                    case .failure(_):
-                        self.showErrorMessage()
-                        return
-                    case .success(let value):
-                        self.topRatedMovies = value.results
-                        self.fillViewData()
-                        return
-                    }
+        self.moviesRepository.getTopRatedMovies(page: 1, genre: nil) { result in
+            DispatchQueue.main.async {
+                switch (result) {
+                case .failure(_):
+                    return
+                case .success(let value):
+                    self.topRatedMovies = value
+                    self.fillViewData()
+                    return
                 }
             }
         }
     }
+    
     func loadRecommendedMovies() {
-        DispatchQueue.global(qos: .background).async {
-            self.moviesRepository.getRecommendedMovies(movieId: 103, page: 1) { result in
-                DispatchQueue.main.async {
-                    switch (result) {
-                    case .failure(_):
-                        self.showErrorMessage()
-                        return
-                    case .success(let value):
-                        self.recommendedMovies = value.results
-                        self.fillViewData()
-                        return
-                    }
+        self.moviesRepository.getRecommendedMovies(movieId: 103, genre: nil, page: 1) { result in
+            DispatchQueue.main.async {
+                switch (result) {
+                case .failure(_):
+                    return
+                case .success(let value):
+                    self.recommendedMovies = value
+                    self.fillViewData()
+                    return
                 }
             }
         }
     }
+    
 }

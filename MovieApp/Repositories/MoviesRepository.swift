@@ -7,81 +7,176 @@
 
 import Foundation
 import Network
+import CoreData
 
 class MoviesRepository {
-    static private let base_url = "https://api.themoviedb.org/3"
     static let base_image_url = "https://image.tmdb.org/t/p/w500"
-    private let networkService: NetworkServiceProtocol
-    private var apiKey: String = ""
+    private let networkDataSource: MovieNetworkDataSource
+    private let dbDataSource: MovieDbDataSource
+    private let networkDbMapper: MapperProtocol<MovieMO, SimpleMovieNetworkModel>
+    private let networkDomainMapper: MapperProtocol<Movie, SimpleMovieNetworkModel>
+    private let domainMapper: MapperProtocol<Movie, MovieMO>
     
-    init (networkService: NetworkServiceProtocol) {
-        self.networkService = networkService
-        loadApiKey()
+    init (networkService: NetworkServiceProtocol, context: NSManagedObjectContext) {
+        self.networkDbMapper = MovieNetworkDbMapper(context: context)
+        self.networkDomainMapper = MovieNetworkDomainMapper()
+        self.domainMapper = MovieDomainMapper()
+        networkDataSource = MovieNetworkDataSource(networkService: networkService)
+        dbDataSource = MovieDbDataSource(context: context, networkDbMapper: networkDbMapper, domainMapper: domainMapper)
     }
     
-    func getMovieGenres(onResponse: @escaping (Result<MovieGenreNetworkModel, NetworkError>) -> Void) {
-        let monitor = NWPathMonitor()
-        let queue = DispatchQueue(label: "InternetConnectionMonitor")
-        monitor.pathUpdateHandler = { pathUpdateHandler in
-            if pathUpdateHandler.status == .satisfied {
-                let params = ["api_key" : self.apiKey, "language" : "en-US"]
-                self.networkService.get(MoviesRepository.base_url + "/genre/movie/list", queryParams: params, onResponse: onResponse)
-            } else {
-                onResponse(Result.failure(NetworkError.clientError))
-            }
-            monitor.cancel()
+    func seedData() {
+        dbDataSource.seedCategories()
+        dbDataSource.saveChanges()
+    }
+    
+    func getMovieGenres(onResponse: @escaping (Result<[Genre], NetworkError>) -> Void) {
+        let movieGenres = dbDataSource.getMovieGenres()
+        print(movieGenres)
+        if movieGenres.count > 0 {
+            onResponse(.success(movieGenres.map{ Genre(id: $0.tmdbId, name: $0.name ?? "") }))
         }
-        monitor.start(queue: queue)
+        networkDataSource.getMovieGenres(onResponse: { result in
+            switch (result) {
+            case .failure(let error):
+                if (movieGenres.count == 0) {
+                    onResponse(.failure(error))
+                }
+                return
+            case .success(let value):
+                self.dbDataSource.updateGenres(genres: value.genres)
+                self.dbDataSource.saveChanges()
+                onResponse(.success(value.genres.map { Genre(id: Int64($0.id), name: $0.name) }))
+                return
+            }
+        })
     }
     
-    func getPopularMovies(page: Int, onResponse: @escaping (Result<PaginatedNetworkModel<SimpleMovieNetworkModel>, NetworkError>) -> Void){
-        let params = ["api_key" : apiKey, "language" : "en-US", "page" : String(page)]
-        networkService.get(MoviesRepository.base_url + "/movie/popular", queryParams: params, onResponse: onResponse)
+    func getPopularMovies(page: Int, genre: Int?, onResponse: @escaping (Result<[Movie], NetworkError>) -> Void){
+        let movies = dbDataSource.getMoviesForCategory(.popular, genre: genre)
+        let domainMovies = movies.map{ self.domainMapper.map($0) }
+        onResponse(.success(domainMovies))
+        networkDataSource.getPopularMovies(page: page, onResponse: { result in
+            switch (result) {
+            case .failure(let error):
+                if (movies.count == 0) {
+                    onResponse(.failure(error))
+                }
+                return
+            case .success(let value):
+                let movieGenres = self.dbDataSource.getMovieGenres()
+                movieGenres.forEach{ movieGenre in
+                    self.dbDataSource.updateMoviesForCategory(.popular, movies: value.results.filter{ mov in mov.genre_ids.contains(where: { id in Int64(id) == movieGenre.tmdbId})}, genre: Int(truncatingIfNeeded: movieGenre.tmdbId))
+                    self.dbDataSource.saveChanges()
+                }
+                let movies = self.dbDataSource.getMoviesForCategory(.popular, genre: genre)
+                let domainMovies = movies.map{ self.domainMapper.map($0) }
+                onResponse(.success(domainMovies))
+                return
+            }
+        })
     }
     
-    func getDayTrendingMovies(page: Int, onResponse: @escaping (Result<PaginatedNetworkModel<SimpleMovieNetworkModel>, NetworkError>) -> Void) {
-        getTrendingMovies(interval: "day", page: page, onResponse: onResponse)
+    
+    func getDayTrendingMovies(page: Int, onResponse: @escaping (Result<[Movie], NetworkError>) -> Void) {
+        let movies = dbDataSource.getMoviesForCategory(.trendingDay, genre: nil)
+        let domainMovies = movies.map{ self.domainMapper.map($0) }
+        onResponse(.success(domainMovies))
+        return networkDataSource.getDayTrendingMovies(page: page, onResponse: {result in
+            switch (result) {
+            case .failure(let error):
+                if movies.count == 0 {
+                    onResponse(.failure(error))
+                }
+                return
+            case .success(let value):
+                self.dbDataSource.updateMoviesForCategory(.trendingDay, movies: value.results, genre: nil)
+                let movies = self.dbDataSource.getMoviesForCategory(.trendingDay, genre: nil)
+                let domainMovies = movies.map{ self.domainMapper.map($0) }
+                onResponse(.success(domainMovies))
+                return
+            }
+        })
     }
     
-    func getWeekTrendingMovies(page: Int, onResponse: @escaping (Result<PaginatedNetworkModel<SimpleMovieNetworkModel>, NetworkError>) -> Void) {
-        getTrendingMovies(interval: "week", page: page, onResponse: onResponse)
+    func getWeekTrendingMovies(page: Int, onResponse: @escaping (Result<[Movie], NetworkError>) -> Void) {
+        let movies = dbDataSource.getMoviesForCategory(.trendingWeek, genre: nil)
+        let domainMovies = movies.map{ self.domainMapper.map($0) }
+        onResponse(.success(domainMovies))
+        return networkDataSource.getWeekTrendingMovies(page: page, onResponse:  {result in
+            switch (result) {
+            case .failure(let error):
+                if movies.count == 0 {
+                    onResponse(.failure(error))
+                }
+                return
+            case .success(let value):
+                self.dbDataSource.updateMoviesForCategory(.trendingWeek, movies: value.results, genre: nil)
+                let movies = self.dbDataSource.getMoviesForCategory(.trendingWeek, genre: nil)
+                let domainMovies = movies.map{ self.domainMapper.map($0) }
+                onResponse(.success(domainMovies))
+                return
+            }
+        })
     }
     
-    private func getTrendingMovies(interval: String, page: Int, onResponse: @escaping (Result<PaginatedNetworkModel<SimpleMovieNetworkModel>, NetworkError>) -> Void) {
-        let params = ["api_key" : apiKey, "page" : String(page)]
-        networkService.get(MoviesRepository.base_url + "/trending/movie/" + interval, queryParams: params, onResponse: onResponse)
+    func getTopRatedMovies(page: Int, genre: Int?, onResponse: @escaping (Result<[Movie], NetworkError>) -> Void) {
+        let movies = dbDataSource.getMoviesForCategory(.trendingWeek, genre: genre)
+        let domainMovies = movies.map{ self.domainMapper.map($0) }
+        onResponse(.success(domainMovies))
+        return networkDataSource.getTopRatedMovies(page: page, onResponse:  {result in
+            switch (result) {
+            case .failure(let error):
+                if movies.count == 0 {
+                    onResponse(.failure(error))
+                }
+                return
+            case .success(let value):
+                self.dbDataSource.updateMoviesForCategory(.topRated, movies: value.results, genre: genre)
+                let movies = self.dbDataSource.getMoviesForCategory(.trendingWeek, genre: genre)
+                let domainMovies = movies.map{ self.domainMapper.map($0) }
+                onResponse(.success(domainMovies))
+                return
+            }
+        })
     }
     
-    func getTopRatedMovies(page: Int, onResponse: @escaping (Result<PaginatedNetworkModel<SimpleMovieNetworkModel>, NetworkError>) -> Void) {
-        let params = ["api_key" : apiKey, "language" : "en-US", "page" : String(page)]
-        networkService.get(MoviesRepository.base_url + "/movie/top_rated", queryParams: params, onResponse: onResponse)
-    }
-    
-    func getRecommendedMovies(movieId: Int, page: Int, onResponse: @escaping (Result<PaginatedNetworkModel<SimpleMovieNetworkModel>, NetworkError>) -> Void) {
-        let params = ["api_key" : apiKey, "language" : "en-US", "page" : String(page)]
-        networkService.get(MoviesRepository.base_url + "/movie/" + String(movieId) + "/recommendations", queryParams: params, onResponse: onResponse)
+    func getRecommendedMovies(movieId: Int, genre: Int?, page: Int, onResponse: @escaping (Result<[Movie], NetworkError>) -> Void) {
+        let movies = dbDataSource.getMoviesForCategory(.recommended, genre: genre)
+        let domainMovies = movies.map{ self.domainMapper.map($0) }
+        onResponse(.success(domainMovies))
+        return networkDataSource.getRecommendedMovies(movieId: movieId, page: page, onResponse:  {result in
+            switch (result) {
+            case .failure(let error):
+                if movies.count == 0 {
+                    onResponse(.failure(error))
+                }
+                return
+            case .success(let value):
+                self.dbDataSource.updateMoviesForCategory(.recommended, movies: value.results, genre: genre)
+                let movies = self.dbDataSource.getMoviesForCategory(.recommended, genre: genre)
+                let domainMovies = movies.map{ self.domainMapper.map($0) }
+                onResponse(.success(domainMovies))
+                return
+            }
+        })
     }
     
     func getMovieDetails(movieId: Int, page: Int, onResponse: @escaping (Result<DetailedMovieNetworkModel, NetworkError>) -> Void) {
-        let params = ["api_key" : apiKey, "language" : "en-US", "page" : String(page)]
-        networkService.get(MoviesRepository.base_url + "/movie/" + String(movieId), queryParams: params, onResponse: onResponse)
+        return networkDataSource.getMovieDetails(movieId: movieId, page: page, onResponse: onResponse)
     }
     
-    func searchMovies(query: String, page: Int, onResponse: @escaping (Result<PaginatedNetworkModel<SimpleMovieNetworkModel>, NetworkError>) -> Void) {
-        let params = ["api_key" : apiKey, "language" : "en-US", "page" : String(page), "query": query]
-        networkService.get(MoviesRepository.base_url + "/search/movie", queryParams: params, onResponse: onResponse)
+    func searchMovies(query: String, page: Int, onResponse: @escaping (Result<[Movie], NetworkError>) -> Void) {
+        let movies = dbDataSource.searchMovies(query: query)
+        onResponse(.success(movies.map{ self.domainMapper.map($0) }))
     }
     
-    private func loadApiKey() {
-        var keys: NSDictionary?
-        if let path = Bundle.main.path(forResource: "keys", ofType: "plist") {
-            keys = NSDictionary(contentsOfFile: path)
-        }
-        if let dict = keys {
-            if let key = dict["tmdbApiKey"] as? String {
-                apiKey = key
-            }
-        }
-
+    func likeMovie(_ tmdbId: Int64, like: Bool = true) {
+        dbDataSource.likeMovie(tmdbId, like: like)
+        dbDataSource.saveChanges()
+    }
+    
+    func getLiked(_ tmdbId: Int64) -> Bool {
+        return dbDataSource.getLiked(tmdbId)
     }
 }

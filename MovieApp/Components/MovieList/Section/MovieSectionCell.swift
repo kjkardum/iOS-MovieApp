@@ -7,11 +7,10 @@
 
 import Foundation
 import UIKit
-import MovieAppData
 
 class MovieSectionCell: UICollectionViewCell {
     static var id = "MovieCell"
-    var movieId: Int?
+    var movieId: Int64?
     weak var image: UIImageView!
     weak var heartButton: CircularToggleButton!
     
@@ -49,22 +48,27 @@ class MovieSectionCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    @objc func likeMovie(liked: Bool) { }
+    @objc func likeMovie(liked: Bool) {
+        if let controller = findViewController() {
+            guard let controller = controller as? MovieListViewController, let movieId = movieId else { return }
+            controller.moviesRepository.likeMovie(movieId, like: liked)
+        }
+    }
     
     @objc func clickMovie() {
         if let controller = findViewController() {
             guard let controller = controller as? MovieListViewController, let movieId = movieId else { return }
-            controller.router.showMovieDetailsController(movieId: movieId)
+            controller.router.showMovieDetailsController(movieId: Int(truncatingIfNeeded: movieId))
         }
     }
     
-    func updateData(movie: SimpleMovieNetworkModel) {
-        var url = defaultPosterUrl;
-        if let path = movie.poster_path { url = MoviesRepository.base_image_url + path}
-        if let url = URL(string: url) {
-            image.load(url: url)
+    func updateData(movie: Movie) {
+        if let data = movie.poster_path {
+            image.image = UIImage(data: data)
+        } else {
+            image.image = UIImage(named: "UnknownPoster")
         }
-        movieId = movie.id
+        movieId = movie.tmdbId
+        heartButton.setState(selected: movie.liked)
     }
-    
 }

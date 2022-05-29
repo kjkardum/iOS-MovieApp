@@ -55,17 +55,18 @@ class CircularToggleButton: UIButton {
             for: .normal)
     }
     
-    func setIcon(selected: Bool) {
+    func setState(selected: Bool) {
         if (selected) {
             setSelectedIcon()
         } else {
             setUnselectedIcon()
         }
+        checked = selected
     }
     
     @objc func click() {
-        checked = !checked
-        setIcon(selected: checked)
-        action(checked)
+        let newCheck = !checked
+        setState(selected: newCheck)
+        action(newCheck)
     }
 }

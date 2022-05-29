@@ -119,10 +119,17 @@ class MovieDetailsCoverView: UIView {
         movieReleaseLabel.text = dateFormatter.string(from: date)
         movieNameLabel.text = model.title + "(" + dateYearOnlyFormatter.string(from: date) + ")"
         userScoreLabel.text = String(Int(model.vote_average * 10)) + "%"
+        if let controller = findViewController() {
+            guard let controller = controller as? MovieDetailsController else { return }
+            starButton.setState(selected: controller.moviesRepository.getLiked(Int64(model.id)))
+        }
     }
     
     @objc func likeMovie(liked: Bool) {
         guard let id = id else { return }
-        likeMovieActionHandler(id)
+        if let controller = findViewController() {
+            guard let controller = controller as? MovieDetailsController else { return }
+            controller.moviesRepository.likeMovie(Int64(id), like: liked)
+        }
     }
 }
