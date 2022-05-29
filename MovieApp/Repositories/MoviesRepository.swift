@@ -179,4 +179,8 @@ class MoviesRepository {
     func getLiked(_ tmdbId: Int64) -> Bool {
         return dbDataSource.getLiked(tmdbId)
     }
+    
+    func getLikedMovies() -> [Movie] {
+        return dbDataSource.getLikedMovies().map { self.domainMapper.map($0) }
+    }
 }

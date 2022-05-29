@@ -37,6 +37,8 @@
 		714C36612843B3AD008DC6C9 /* MovieMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714C365E2843B3AD008DC6C9 /* MovieMO+CoreDataProperties.swift */; };
 		714C36622843B3AD008DC6C9 /* GenreMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714C365F2843B3AD008DC6C9 /* GenreMO+CoreDataProperties.swift */; };
 		714C36632843B3AD008DC6C9 /* MovieGroupMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714C36602843B3AD008DC6C9 /* MovieGroupMO+CoreDataProperties.swift */; };
+		714C36662843C1ED008DC6C9 /* FavoritesStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714C36652843C1ED008DC6C9 /* FavoritesStackView.swift */; };
+		714C36682843C514008DC6C9 /* FavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714C36672843C514008DC6C9 /* FavoriteCell.swift */; };
 		718896B22803325300399261 /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718896B12803325300399261 /* TimeIntervalExtension.swift */; };
 		718896B4280349F800399261 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718896B3280349F800399261 /* Constants.swift */; };
 		718896B628034A9400399261 /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718896B528034A9400399261 /* UIButtonExtension.swift */; };
@@ -141,6 +143,8 @@
 		714C365E2843B3AD008DC6C9 /* MovieMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		714C365F2843B3AD008DC6C9 /* GenreMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GenreMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		714C36602843B3AD008DC6C9 /* MovieGroupMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieGroupMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		714C36652843C1ED008DC6C9 /* FavoritesStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesStackView.swift; sourceTree = "<group>"; };
+		714C36672843C514008DC6C9 /* FavoriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCell.swift; sourceTree = "<group>"; };
 		718896B12803325300399261 /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		718896B3280349F800399261 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		718896B528034A9400399261 /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
@@ -240,6 +244,7 @@
 		7119B6B6280326E40036E826 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				714C36642843C1E2008DC6C9 /* Favorites */,
 				718896BE28042D3300399261 /* MovieList */,
 				7119B6C3280327E70036E826 /* Common */,
 				7119B6B72803275B0036E826 /* MovieDetails */,
@@ -342,6 +347,15 @@
 				714C365828439873008DC6C9 /* Group.swift */,
 			);
 			path = Domain;
+			sourceTree = "<group>";
+		};
+		714C36642843C1E2008DC6C9 /* Favorites */ = {
+			isa = PBXGroup;
+			children = (
+				714C36652843C1ED008DC6C9 /* FavoritesStackView.swift */,
+				714C36672843C514008DC6C9 /* FavoriteCell.swift */,
+			);
+			path = Favorites;
 			sourceTree = "<group>";
 		};
 		718896BE28042D3300399261 /* MovieList */ = {
@@ -669,6 +683,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71F4827D281ED8BC0098F14A /* CGFloatExtension.swift in Sources */,
+				714C36662843C1ED008DC6C9 /* FavoritesStackView.swift in Sources */,
 				714C36632843B3AD008DC6C9 /* MovieGroupMO+CoreDataProperties.swift in Sources */,
 				71F482952826D7480098F14A /* MoviesRepository.swift in Sources */,
 				7119B6C828032CE40036E826 /* MovieModel.swift in Sources */,
@@ -694,6 +709,7 @@
 				714C365928439873008DC6C9 /* Group.swift in Sources */,
 				71F482A02826DA970098F14A /* MovieProductionCompanyNetworkModel.swift in Sources */,
 				7119B6C5280328130036E826 /* StyledUILabel.swift in Sources */,
+				714C36682843C514008DC6C9 /* FavoriteCell.swift in Sources */,
 				71E7ACD227F498E900C9C449 /* UIFontExtension.swift in Sources */,
 				71F4828328245B410098F14A /* GroupedMovieModel.swift in Sources */,
 				714C363728425A57008DC6C9 /* MapperProtocol.swift in Sources */,

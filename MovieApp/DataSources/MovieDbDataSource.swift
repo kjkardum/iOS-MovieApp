@@ -80,6 +80,16 @@ class MovieDbDataSource {
         return movie.liked
     }
     
+    func getLikedMovies() -> [MovieMO] {
+        let request = MovieMO.fetchRequest() as NSFetchRequest<MovieMO>
+        request.predicate = NSPredicate(format: "liked == YES")
+        
+        guard
+            let movies = try? context.fetch(request)
+        else { return [] }
+        return movies
+    }
+    
     func getMoviesForCategory(_ category: MovieGroupEnum, genre: Int?) -> [MovieMO] {
         let request = MovieGroupMO.fetchRequest() as NSFetchRequest<MovieGroupMO>
         request.predicate = NSPredicate(format: "rawType == %i", category.rawValue)
