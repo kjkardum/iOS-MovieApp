@@ -34,6 +34,8 @@ class MovieDetailsCoverView: UIView {
         setViewLayout()
     }
     
+    
+    
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func buildView() {
@@ -74,23 +76,23 @@ class MovieDetailsCoverView: UIView {
         }
         genreLabel.snp.makeConstraints{ make in
             make.bottom.equalTo(starButton.snp.top).offset(-CGFloat.margin(withMultiplier: 3))
-            make.left.equalTo(starButton)
-        }
+            make.left.equalTo(starButton).offset(500)
+        } // THIRD
         movieLengthLabel.snp.makeConstraints{ make in
             make.bottom.equalTo(genreLabel)
             make.left.equalTo(genreLabel.snp.right).offset(CGFloat.defaultMargin)
         }
         movieReleaseLabel.snp.makeConstraints{ make in
             make.bottom.equalTo(genreLabel.snp.top).offset(-CGFloat.defaultMargin)
-            make.left.equalTo(genreLabel)
-        }
+            make.left.equalTo(starButton).offset(500)
+        } // SECOND
         movieNameLabel.snp.makeConstraints{ make in
             make.bottom.equalTo(movieReleaseLabel.snp.top).offset(-CGFloat.defaultMargin)
-            make.left.equalTo(movieReleaseLabel)
-        }
+            make.left.equalTo(starButton).offset(500)
+        } // FIRST
         userScoreLabel.snp.makeConstraints{ make in
             make.bottom.equalTo(movieNameLabel.snp.top).offset(-CGFloat.margin(withMultiplier: 3))
-            make.left.equalTo(movieNameLabel)
+            make.left.equalTo(starButton)
         }
         userScoreTitleLabel.snp.makeConstraints{ make in
             make.bottom.equalTo(userScoreLabel)
@@ -123,6 +125,32 @@ class MovieDetailsCoverView: UIView {
             guard let controller = controller as? MovieDetailsController else { return }
             starButton.setState(selected: controller.moviesRepository.getLiked(Int64(model.id)))
         }
+    }
+    override func didMoveToSuperview() {
+        layoutIfNeeded()
+        animate()
+    }
+    
+    func animate() {
+        UIView.animate(withDuration: 1, delay: 0, options: .curveLinear) {
+            self.movieNameLabel.snp.updateConstraints{ make in
+                make.left.equalTo(self.starButton).offset(0)
+            }
+            self.layoutIfNeeded()
+         }
+        UIView.animate(withDuration: 1, delay: 0.5, options: .curveLinear) {
+            self.movieReleaseLabel.snp.updateConstraints{ make in
+                make.left.equalTo(self.starButton).offset(0)
+            }
+            self.layoutIfNeeded()
+         }
+        UIView.animate(withDuration: 1, delay: 1, options: .curveLinear) {
+            self.genreLabel.snp.updateConstraints{ make in
+                make.left.equalTo(self.starButton).offset(0)
+            }
+            self.layoutIfNeeded()
+         }
+        
     }
     
     @objc func likeMovie(liked: Bool) {
