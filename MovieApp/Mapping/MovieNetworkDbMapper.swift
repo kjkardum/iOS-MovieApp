@@ -44,9 +44,9 @@ class MovieNetworkDbMapper: MapperProtocol<MovieMO, SimpleMovieNetworkModel> {
         movie.tmdbId = tmdbId
         movie.adult = from.adult
         movie.backdrop_path = from.backdrop_path
-        movie.original_language = from.original_language
-        movie.original_title = from.original_title
-        movie.overview = from.overview
+        movie.original_language = from.original_language ?? ""
+        movie.original_title = from.original_title ?? ""
+        movie.overview = from.overview ?? ""
         movie.popularity = from.popularity
         DispatchQueue.global(qos: .background).sync {
             let image = data != nil ? UIImage(data: data!)?.jpegData(compressionQuality: 90) : nil
